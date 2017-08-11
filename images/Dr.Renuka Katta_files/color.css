@@ -1,0 +1,306 @@
+::selection {
+	color: #FFF;
+	background: #3b50ad;
+}
+a:hover, a:focus{
+color: #3b50ad;
+}
+.has-success .form-control-feedback {
+	color: #3b50ad;
+}
+#hs_header{
+background: #3b50ad;
+}
+.btn-success.active, .btn-success:active, .btn-success:focus, .btn-success:hover, .open .dropdown-toggle.btn-success{
+background: rgba(42, 115, 212, 0.8);
+border-color: rgba(42, 115, 212, 0.8);
+}
+.hs_copyright{
+background:rgba(42, 115, 212, 0.8);
+}
+@media (max-width: 767px) {
+#hs_header .hs_menu li > ul li > ul > li{
+background:rgba(42, 115, 212, 0.8);
+}
+#hs_header .hs_menu li > ul li > ul > li:hover{
+background: #3b50ad;
+}
+}
+.ls_large_text_01{
+background: #3b50ad;
+}
+.ls_large_text_02{
+background: #3b50ad;
+}
+#style-switcher .bottom a.settings i{
+color: #3b50ad;
+}
+.ls-fullwidth .ls-nav-next{
+background-color:#3b50ad;
+}
+.ls-fullwidth .ls-nav-prev{
+background-color: #3b50ad;
+}
+#hs_header .hs_menu li:hover a{
+color: #3b50ad;
+}
+#hs_header .hs_menu li > ul li a.active, #hs_header .hs_menu li > ul li:hover > a{
+color: #3b50ad !important;
+}
+#hs_header .hs_menu li > ul > li > ul > li:first-child.fa-chevron-right:before{
+color: #3b50ad;
+}
+.hs_service:hover svg{
+fill: #3b50ad;
+}
+.hs_service:hover h4{
+color: #3b50ad;
+}
+.hs_service:hover{
+border-bottom: 2px solid #3b50ad;
+}
+.tab-content{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_heading{
+color: #3b50ad;
+}
+.hs_appointment_form_div{
+border-bottom: 2px solid #3b50ad;
+}
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{
+background-color: #3b50ad;
+border-color: #3b50ad;
+}
+.up_coming_events_slider_item:hover .hs_event_div{
+border-bottom: 2px solid #3b50ad;
+}
+.our_doctor_team_slider_item:hover{
+background: #3b50ad;
+}
+.our_doctor_team_slider_item:hover .hs_team_member_detail h3{
+color: #3b50ad;
+}
+.our_doctor_team_slider_item:hover .hs_team_member_detail{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_testimonial p i{
+color: #3b50ad;
+}
+.hs_theme_color{
+color: #3b50ad;
+}
+.hs_testimonial{
+border-bottom: 2px solid #3b50ad;
+}
+#bx-pager a:hover img{
+border-bottom: 2px solid #3b50ad;
+}
+.our_partners_slider_item:hover{
+border-bottom: 2px solid #3b50ad;
+}
+#hs_footer{
+background:#3b50ad;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+background-color: #3b50ad;
+border: 1px solid #3b50ad;
+}
+.nav-tabs > li > a{
+border: 1px solid #3b50ad;
+border-bottom-color: rgba(255,255,255,0);
+}
+.form-control:focus{
+border-color: #3b50ad;
+}
+input[type="date"]:focus{
+border: 1px solid #3b50ad;
+}
+.up_coming_events_slider_item:hover .hs_event_date {
+	background: #3b50ad;
+}
+.up_coming_events_slider_item:hover .hs_event_date:before {
+	border-left: 2px dashed #3b50ad;
+}
+.hs_page_title{
+background:#3b50ad;
+}
+.hs_how_we_are_text h4{
+color:#3b50ad;
+}
+.hs_how_we_are_text{
+border-bottom: 2px solid #3b50ad;
+}
+.health_care_team_slider_item:hover img {
+background:#3b50ad;
+}
+.health_care_team_slider_item:hover .hs_team_member_detail h4{
+color:#3b50ad;
+}
+.health_care_team_slider_item:hover .hs_team_member_detail{
+border-bottom: 2px solid #3b50ad;
+}
+.panel-default > .panel-heading{
+background:#3b50ad;
+}
+.testimonial{
+border-bottom: 2px solid #3b50ad;
+}
+.releted_post_slider_item:hover .related_post_date{
+background:#3b50ad;
+}
+.releted_post_slider_item:hover .releted_post_detail h4{
+color:#3b50ad;
+}
+.releted_post_slider_item:hover .releted_post_detail{
+border-bottom: 2px solid #3b50ad;
+}
+.portfolio-filter li a:hover, .portfolio-filter li a.active{
+color:#3b50ad;
+}
+.portfolio-details{
+border-bottom: 2px solid #3b50ad;
+}
+.portfolio-details > h4{
+color:#3b50ad;
+}
+.portfolio-details2{
+border-bottom: 2px solid #3b50ad;
+}
+.portfolio-details2 > h4{
+color:#3b50ad;
+}
+.btn-success{
+background-color: #3b50ad;
+border-color: #3b50ad;
+}
+#patients_testimonials_slider .patients_testimonials_slider_item:hover h4{
+color:#3b50ad;
+}
+#patients_testimonials_slider .patients_testimonials_slider_item:hover{
+border-bottom: 2px solid #3b50ad;
+}
+.carousel-control:hover, .carousel-control:focus{
+color: #3b50ad;
+}
+.hs_blog_categorie_pager li.active a{
+color: #3b50ad;
+}
+.hs_post_tab ul li a.active{
+color: #3b50ad;
+}
+.hs_post_tab_content .hs_post:hover{
+border-left: 2px solid #3b50ad;
+}
+.hs_post_tab_content .hs_post:hover p{
+color: #3b50ad;
+}
+.hs_post_tab_content{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_sidebar_categories:hover{
+border-bottom: 2px solid #3b50ad;
+}
+.health_care_advice .hs_post:hover{
+border-left: 2px solid #3b50ad;
+}
+.health_care_advice .hs_post:hover h4{
+color: #3b50ad;
+}
+.health_care_advice{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_tags ul li a:hover{
+background: #3b50ad;
+}
+.hs_blog_categorie_detail{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_pager ul li a:hover {
+color: #3b50ad;
+border: 1px solid #3b50ad;
+}
+.hs_comment_form{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_comment{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_sub_comment_div > .hs_sub_comment:before{
+border-left: 2px solid #3b50ad;
+border-bottom: 1px solid #3b50ad;
+}
+.hs_single_profile .hs_single_profile_detail > div > div > a{
+color: #3b50ad;
+}
+.hs_profile_social ul li:hover a {
+border-color: #3b50ad;
+background: #3b50ad;
+}
+.post_by_slider_item:hover .post_by_detail{
+border-bottom: 2px solid #3b50ad;
+}
+.btn-primary{
+background-color: #3b50ad;
+border-color: #3b50ad;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{
+background-color: #3b50ad;
+border-color: #3b50ad;
+}
+.panel-title > a:hover{
+color:#fff;
+}
+blockquote{
+border-left: 5px solid #3b50ad;
+}
+.blockquote-reverse, blockquote.pull-right{
+border-right: 5px solid #3b50ad;
+}
+.portfolio-grid .portfolio-item:hover{
+background:#3b50ad;
+}
+.portfolio-grid .portfolio-item:hover .portfolio_doctor_details h4{
+color:#3b50ad;
+}
+.portfolio-grid .portfolio-item:hover .portfolio_doctor_details{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_contact_heading{
+color: #3b50ad;
+}
+.hs_contact ul li i {
+border: 1px solid #3b50ad;
+background: #3b50ad;
+}
+.hs_contact_social{
+border-bottom: 2px solid #3b50ad;
+}
+.hs_additional_support:hover h4 {
+	color: #3b50ad;
+}
+.hs_additional_support:hover{
+border-bottom-color: #3b50ad;
+}
+.btn-link{
+color: #3b50ad;
+}
+#style-switcher > div > h3{
+color: #3b50ad !important;
+}
+#picker{
+border: 1px solid #3b50ad;
+border-right: 40px solid #3b50ad;
+}
+.hs_checkbox{
+	background-image: url(../../images/icon/2a73d4.png);
+	}
+#bx-pager a.active img{
+border-color:#3b50ad;
+}	
+.hs_nav_toggle{
+background: #3b50ad !important;
+}
+.panel-body .hs_hospital_update:hover img{
+border-left: 2px solid #3b50ad;
+}
