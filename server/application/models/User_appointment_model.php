@@ -15,12 +15,7 @@ class User_appointment_model extends CI_Model
         parent::__construct();
     }
 
-    // get all
-    function get_all()
-    {
-        $this->db->order_by($this->id, $this->order);
-        return $this->db->get($this->table)->result();
-    }
+    
 
     // get Appointmet Settings
     function getAppointmetSettings($date)
@@ -44,17 +39,33 @@ class User_appointment_model extends CI_Model
 
     }
     
-    // get total rows
-    function total_rows($q = NULL) {
-        $this->db->like('id', $q);
-	$this->db->or_like('user_id', $q);
-	$this->db->or_like('appointment_time', $q);
-	$this->db->or_like('status', $q);
-	$this->db->or_like('active', $q);
-	$this->db->or_like('deleted', $q);
-	$this->db->or_like('cancelled_by', $q);
-	$this->db->from($this->table);
-        return $this->db->count_all_results();
+    // get all
+    function get_all($where,$start,$pagesize,$orderby,$usertype,$userId)
+    {
+        // build the query.
+        if (isset($usertype) && isset($userId)) {
+            if ( $usertype != 'Super Admin' ) {
+               $query = "SELECT app.*,full_name,email_address,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
+
+            }else{
+                $query = "SELECT app.*,full_name,email,phone_number  FROM " .$this->table .' app  LEFT JOIN admin as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
+
+            }
+
+        }else{
+            $query = "SELECT * FROM " .$this->table .' '. $where.' '.$orderby." LIMIT ". $start.','. $pagesize;
+        }
+        $query = $this->db->query($query);
+        return $query->result_array();
+    }
+    
+
+        // get total rows
+    function total_rows($where = NULL) {
+    $query = "SELECT * FROM " .$this->table .' app '. $where;
+        $query = $this->db->query($query);
+        $count = $query->num_rows();
+        return $count;
     }
 
     // get data with limit and search

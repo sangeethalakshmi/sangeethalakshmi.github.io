@@ -2795,3 +2795,4 @@ div[data-target] > div {
 .nopadding{padding:0px;}
 .displaynone{display:none !important;}
 .margin_40_top{margin-top:40px;}
+.notbluehref,.notbluehref:hover{color: #fff}

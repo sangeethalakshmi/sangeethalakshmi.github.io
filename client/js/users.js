@@ -5,13 +5,6 @@
  */
 
 
-if (localStorage.getItem('usertype') == 'Super Admin') {
-  $('.notforadmin').hide();
-  $('.foradmin').show();
-} else {
-  $('.notforadmin').show();
-  $('.foradmin').hide();
-}
 var userslist = [];
 function updateUser(from,obj){
   var functionname =  "";
@@ -48,8 +41,11 @@ function updateUser(from,obj){
                   $('#user_success').show();
                   setTimeout(function () {
                       $('#user_success').hide();
-                      renderUsersGrid();
-
+                      if (window.location.pathname && window.location.pathname.indexOf("Registerform.html")>-1) {
+                        window.location.href="index.html"
+                      }else{;
+                        renderUsersGrid();
+                      }
                   }, 2000);
                 }
                 else {
@@ -255,5 +251,12 @@ function renderUsersGrid(){
   });
 }
 $(document).ready(function () {
-  renderUsersGrid();
+  setTimeout(function  (argument) {
+    // body...
+  },1000);
+  if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
+    getAddUserForm()
+  }else{;
+    renderUsersGrid();
+  }
 });

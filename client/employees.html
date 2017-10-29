@@ -37,8 +37,7 @@
             <div id="status"><img src="images/loader.gif" id="preloader_image" width="36" height="36" alt="loading image"/></div>
         </div>
         <!--pre loader end--> 
-
-        <!--header start-->
+<!--header start-->
         <header id="hs_header">
             <div class="container">
                 <div class="row">
@@ -54,21 +53,20 @@
                                 <li class="notforadmin"><a href="cases.html">Cases</a></li>
                                 <li class="notforadmin"><a href="approach.html">Approach</a></li>
                                 <li class="notforadmin"><a href="articles.html">Articles</a></li>
-                                <li class="notforadmin"><a href="activities.html">Activities</a></li>
-                                <li class="notforadmin"><a href="peoplestalk.html">Peoples Talk</a>
+                                <li class="notforadmin showloginbutton"><a href="activities.html">Activities</a></li>
+                                <li class="notforadmin showloginbutton"><a href="peoplestalk.html">Peoples Talk</a>
                                 <li class="notforadmin"><a href="contacts.html">Contact</a></li>
-                                <li class="notforadmin"><a href="site.html">Map</a></li>
+                                <li class="notforadmin showloginbutton"><a href="site.html">Map</a></li>
                                 <li class="foradmin"><a href="users.html">Users</a></li>
-                                <li class="foradmin"><a href="appointments.html">Appointments</a>
-                                <li class="foradmin"><a href="settings.html">Settings</a></li>
-                                <li class="foradmin"><a>Profile</a>
+                                <li class="foradmin"><a href="employees.html">Employees</a></li>
+                                <li class="foradmin"><a href="bookappointment.html">Book Appointment</a>
+                                
+                               <li class="showlogoutbutton"><a href="settings.html">Profile</a>
                                     <ul>
-                                        <li><a href="blog-categories.html">Blog Categories</a></li>
-                                        <li><a href="blog-single-post.html">Blog Single Post</a></li>
-                                        <li><a href="blog-single-post-leftsidebar.html">Blog Leftsidebar</a></li>
-                                        <li><a href="blog-single-post-rightsidebar.html">Blog Rightsidebar</a></li>
+                                        <li><a href="settings.html">Settings</a></li>
+                                        <li class="notforadmin"><a href="bookappointment.html">My Appointment</a>
                                     </ul>
-                                </li>
+                               </li>
                             </ul>
 
                         </nav>
@@ -79,7 +77,8 @@
                                 <li><a target="_blank" href="https://www.facebook.com/renukakattadr/"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href=""><i class="fa fa-twitter"></i></a></li>
                                 <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-                                <li><a class="fa fa-sign-in" data-toggle="modal" data-target="#myModal"></a></li>
+                                <li class="showloginbutton"><a class="fa fa-sign-in" data-toggle="modal" data-target="#myModal"></a></li>
+
                             </ul>
                         </div>
                         <div class="hs_search_box">
@@ -98,15 +97,27 @@
             <!-- .container --> 
 
         </header>
-        <!--header end--> 
+        <!--header end-->  
 
         <div class="hs_page_title">
 
-            <div class="container">
+           <div class="container">
+                <div class="col-sm-2">
 
-                <marquee class="scrolltext" align="right" behavior="alternate" dir="ltr" scrollamount="5">
-                    WELCOME TO HOMOEOPATHY CLINIC – THE CLASSICAL CLINIC
-                </marquee>
+                </div>
+                <div class="col-sm-8">
+                    <marquee class="scrolltext" align="right" behavior="alternate" dir="ltr" scrollamount="5">
+                        WELCOME TO HOMOEOPATHY CLINIC – THE CLASSICAL CLINIC
+                    </marquee>
+                </div>
+                <div class="col-sm-2">
+                    <ul >
+                    <li><a href="index.html">Home</a></li>
+                    <li class="showlogoutbutton"> <a onclick="doLogout()">Logout</a></li>
+                </ul>
+                </div>
+                
+                
             </div>
         </div>
 
@@ -292,6 +303,7 @@
                                         <input type="password" class="form-control" name="user_pwd" id="user_pwd" placeholder="Enter password">
                                     </div>
                                 </div>
+                                <a href="registerform.html" class="col-sm-3">Register form</a>
                                 <span class="text-danger text-center" id="login_error" style="display:none"></span>
                             </form>
                         </div>
@@ -326,8 +338,8 @@
         <script type="text/javascript" src="js/jqwidgets/jqxgrid.pager.js"></script>
         <script type="text/javascript" src="js/jqwidgets/jqxdropdownlist.js"></script>
         <script type="text/javascript" src="js/custom.js"></script> 
-        <script type="text/javascript" src="js/functionality.js"></script> 
         <script type="text/javascript" src="js/employees.js"></script> 
+        <script type="text/javascript" src="js/functionality.js"></script> 
         <!--main js file end-->
     </body>
 </html>

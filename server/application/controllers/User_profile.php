@@ -199,7 +199,7 @@ class User_profile extends CI_Controller
             'active' => 1,
             'deleted' => 0
         );
-
+        $data['password'] = substr($this->input->post('full_name'), 0, 3).'1234';
         $result = $this->User_profile_model->insert($data);
          if($result){
             $response = array();

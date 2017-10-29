@@ -5,13 +5,6 @@
  */
 
 
-if (localStorage.getItem('usertype') == 'Super Admin') {
-  $('.notforadmin').hide();
-  $('.foradmin').show();
-} else {
-  $('.notforadmin').show();
-  $('.foradmin').hide();
-}
 var userslist = [];
 function updateUser(from,obj){
   var functionname =  "";

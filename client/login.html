@@ -18,6 +18,7 @@
         <link rel="stylesheet"  type="text/css" href="css/color/color.css"/>
         <link rel="stylesheet" href="css/jqwidgets/styles/jqx.base.css" type="text/css" />
         <link rel="stylesheet" href="css/jqwidgets/styles/jqx.classic.css" type="text/css" />
+         <link rel="stylesheet" href="css/bootstrap-datepicker/bootstrap-datepicker.css" type="text/css" />
         <!-- <script type="text/javascript">
         //   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         //   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -37,7 +38,8 @@
             <div id="status"><img src="images/loader.gif" id="preloader_image" width="36" height="36" alt="loading image"/></div>
         </div>
         <!--pre loader end--> 
-<!--header start-->
+
+       <!--header start-->
         <header id="hs_header">
             <div class="container">
                 <div class="row">
@@ -77,7 +79,7 @@
                                 <li><a target="_blank" href="https://www.facebook.com/renukakattadr/"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href=""><i class="fa fa-twitter"></i></a></li>
                                 <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-                                <li class="showloginbutton"><a class="fa fa-sign-in" data-toggle="modal" data-target="#myModal"></a></li>
+                                
 
                             </ul>
                         </div>
@@ -97,75 +99,61 @@
             <!-- .container --> 
 
         </header>
-        <!--header end-->  
-        <div class="hs_page_title">
-          <div class="container">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-8">
-              <marquee class="scrolltext" align="right" behavior="alternate" dir="ltr" scrollamount="5">
-                WELCOME TO HOMOEOPATHY CLINIC – THE CLASSICAL CLINIC
-              </marquee>
-            </div>
-            <div class="col-sm-2">
-                <ul >
-                  <li><a href="index.html">Home</a></li>
-                  <li class="showlogoutbutton"> <a onclick="doLogout()">Logout</a></li>
-                 </ul>
-            </div>
-          </div>
-        </div>       
+        <!--header end--> 
 
-        
+        <div class="hs_page_title">
+
+           <div class="container">
+                <div class="col-sm-2">
+
+                </div>
+                <div class="col-sm-8">
+                    <marquee class="scrolltext" align="right" behavior="alternate" dir="ltr" scrollamount="5">
+                        WELCOME TO HOMOEOPATHY CLINIC – THE CLASSICAL CLINIC
+                    </marquee>
+                </div>
+                <div class="col-sm-2">
+                    <ul >
+                    <li><a href="index.html">Home</a></li>
+                    <li class="showlogoutbutton"> <a onclick="doLogout()">Logout</a></li>
+                </ul>
+                </div>
+                
+                
+            </div>
+        </div>
+
       
 
         <div class="container"> 
             <div class="hs_margin_50"></div>
             <!-- Home start -->
-            <div class="row listscreen">
-                <div class="col-sm-12" id='jqxWidget'>
-                    <div class="col-sm-12 nopadding">
-                        <h3 class="col-sm-11 text-left nopadding">Users List</h3>
-                        <a  style="margin-top:30px;" onclick="getAddUserForm()" class="nopadding col-sm-1 text-right">Add <i class="fa fa-plus-square-o"></i></a>
-                    </div>
-                    
-                    <div id="usersjqxgrid"></div>
+           
+            <div class="row  margin_40_top">
+                <div class="row margin_40_top">
+                    <form class="form-horizontal" id="loginform" name="loginform">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Email:</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" name="user_email" id="user_email" placeholder="Enter email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="pwd">Password:</label>
+                            <div class="col-sm-8"> 
+                                <input type="password" class="form-control" name="user_pwd" id="user_pwd" placeholder="Enter password">
+                            </div>
+                        </div>
+                        <span class="text-danger text-center" id="login_error" style="display:none"></span>
+                        <div class="form-group"> 
+                          <div class="col-sm-offset-2 col-sm-10">
+                            <a  onclick="doLogin('adminlogin')" class="btn btn-default">Sign in</a>
+                            <a  class="btn btn-default" href="index.html">Close</a>
+                          </div>
+                        </div>
+                    </form>
                 </div>
-            </div>
-            <div class="row addscreen margin_40_top">
-                <form class="form-horizontal" id="usercreateorupdateform" name="usercreateorupdateform">
-                    <div class="form-group">
-                      <label class="control-label col-sm-2" for="email">Name</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" required name="full_name"  id="full_name" placeholder="Enter name">
-                      </div>
-                      <span class="text-danger" id="full_name_error"></span>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label col-sm-2" for="email">Email:</label>
-                      <div class="col-sm-8">
-                        <input type="email" class="form-control" required name="email_address" id="email_address" placeholder="Enter email">
-                      </div>
-                      <span class="text-danger" id="email_address_error"></span>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label col-sm-2" for="phone">Phone</label>
-                      <div class="col-sm-8"> 
-                        <input type="text" class="form-control" id="phone_number" name="phone_number" required placeholder="Enter phone">
-                      </div>
-                    </div>
-                    <input type="hidden" class="form-control" id="user_id" name="id">
-                    <input type="hidden" class="form-control" id="status1" name="status">
-                    <input type="hidden" class="form-control" id="active" name="active">
-                    <span id="user_success" class="text-success"></span>
-                    <span id="user_error" class="text-danger"></span>
-                    <div class="form-group"> 
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <a onclick="updateUser()" class="btn btn-default">Save</a>
-                        <a onclick="renderUsersGrid()" class="btn btn-default">Cancel</a>
-                      </div>
-                    </div>
-                </form>
-            </div>
+             </div>
             <!-- /Home end-->
            <div class="hs_margin_40"></div>
         </div>
@@ -273,67 +261,19 @@
 
         </footer>
         <!--footer end--> 
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Sig in</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <form class="form-horizontal" id="loginform" name="loginform">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="email">Email:</label>
-                                    <div class="col-sm-8">
-                                        <input type="email" class="form-control" name="user_email" id="user_email" placeholder="Enter email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="pwd">Password:</label>
-                                    <div class="col-sm-8"> 
-                                        <input type="password" class="form-control" name="user_pwd" id="user_pwd" placeholder="Enter password">
-                                    </div>
-                                </div>
-                                <a href="registerform.html" class="col-sm-3">Register form</a>
-                                <span class="text-danger text-center" id="login_error" style="display:none"></span>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="userloginbutton" class="btn btn-default">Sign in</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        
         <div class="hs_copyright"> Copyright @2008, renukakatta.org. All rights reserved. </div>
         <!--main js file start--> 
         <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script> 
+        <script type="text/javascript" src="js/moment/moment.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script> 
         <script type="text/javascript" src="js/owl.carousel.js"></script> 
         <script type="text/javascript" src="js/jquery.bxslider.js"></script> 
         <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
         <script type="text/javascript" src="js/smoothscroll.js"></script> 
-        <script type="text/javascript" src="js/single-0.1.0.js"></script> 
-        <script type="text/javascript" src="js/jqwidgets/jqxcore.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxbuttons.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxscrollbar.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxlistbox.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxmenu.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.selection.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.filter.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.sort.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxdata.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.pager.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxdropdownlist.js"></script>
+        <script type="text/javascript" src="js/single-0.1.0.js"></script>
         <script type="text/javascript" src="js/custom.js"></script> 
-        <script type="text/javascript" src="js/functionality.js"></script> 
-        <script type="text/javascript" src="js/users.js"></script> 
+        <script type="text/javascript" src="js/functionality.js"></script>
         <!--main js file end-->
     </body>
 </html>

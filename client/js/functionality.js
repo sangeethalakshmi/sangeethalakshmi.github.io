@@ -11,10 +11,17 @@ if(localStorage.getItem('usertype') == 'Super Admin'){
   $('.notforadmin').show();
   $('.foradmin').hide();
 }
-  
-$('#userloginbutton').click(function () {
+if (localStorage.getItem('usertype') && localStorage.getItem('usertype').length>0) {
+  $('.showlogoutbutton').show();
+  $('.showloginbutton').hide();
+}else{
+  $('.showlogoutbutton').hide();
+  $('.showloginbutton').show();
+};
+function doLogin(from){
+
   var url = 'user_profile/loginUser';
-  if ((window.location.href).indexOf("admin") == -1) {
+  if (from && from == "adminlogin") {
      url = 'Admin/loginEmployee';
   };
   var login_details = $('#loginform').serialize();
@@ -28,23 +35,26 @@ $('#userloginbutton').click(function () {
       success: function (result) {
         var data = $.parseJSON(result);
         if (data.success) {
-          console.log("correct login");
           $('.modal').modal('hide');
           if (data.user) {
-             localStorage.setItem('user', data.user);
+             localStorage.setItem('user', JSON.stringify(data.user));
             if (data.user.role) {
+              localStorage.setItem('usertype', data.user.role);
               if (data.user.role == 'Super Admin') {
-                localStorage.setItem('usertype', 'Super Admin');
+                
                 $('.foradmin').show();
                 $('.notforadmin').hide();
-              };
+              }
             } else {
                localStorage.setItem('usertype', 'User');
               $('.foradmin').hide();
               $('.notforadmin').show();
             }
+            $('.showlogoutbutton').show();
+            $('.showloginbutton').hide();
           }
-          // 
+          window.location.href = 'index.html';
+
         } else {
           $('#login_error').html(data.error);
           $('#login_error').show();
@@ -60,5 +70,14 @@ $('#userloginbutton').click(function () {
     $('#login_error').html('Please Enter User Password.');
     $('#login_error').show();
   }
+}
+$('#userloginbutton').click(function () {
+  doLogin();
 });
+
+function doLogout (){
+  localStorage.removeItem('usertype');
+  localStorage.removeItem('user');
+  window.location.href = 'index.html';
+};
 

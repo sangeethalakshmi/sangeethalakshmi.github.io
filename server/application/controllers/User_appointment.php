@@ -30,6 +30,112 @@ class User_appointment extends CI_Controller
         }
 
     }
+    public function getAppointments(){
+         $where = " WHERE app.active = 1 ";
+        $filterscount = $this->input->get('filterscount');
+        if (isset($filterscount)  && $filterscount> 0) {
+             $where =  $where."and (";
+            $tmpdatafield = "";
+            $tmpfilteroperator = "";
+            for ($i=0; $i < $filterscount; $i++)
+            {
+                // get the filter's value.
+                $filtervalue =  $this->input->get("filtervalue" . $i);
+                // get the filter's condition.
+                $filtercondition = $this->input->get("filtercondition" . $i);
+                // get the filter's column.
+                $filterdatafield = $this->input->get("filterdatafield" . $i);
+                // get the filter's operator.
+                $filteroperator = $this->input->get("filteroperator" . $i);
+
+                if ($tmpdatafield == "")
+                {
+                        $tmpdatafield = $filterdatafield;
+                }
+                else if ($tmpdatafield <> $filterdatafield)
+                {
+                        $where .= ")AND(";
+                }
+                else if ($tmpdatafield == $filterdatafield)
+                {
+                        if ($tmpfilteroperator == 0)
+                        {
+                                $where .= " AND ";
+                        }
+                        else $where .= " OR ";
+                }
+
+                // build the "WHERE" clause depending on the filter's condition, value and datafield.
+                switch($filtercondition)
+                {
+                    case "CONTAINS":
+                            $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."%'";
+                            break;
+                    case "DOES_NOT_CONTAIN":
+                            $where .= " " . $filterdatafield . " NOT LIKE '%" . $filtervalue ."%'";
+                            break;
+                    case "EQUAL":
+                            $where .= " " . $filterdatafield . " = '" . $filtervalue ."'";
+                            break;
+                    case "NOT_EQUAL":
+                            $where .= " " . $filterdatafield . " <> '" . $filtervalue ."'";
+                            break;
+                    case "GREATER_THAN":
+                            $where .= " " . $filterdatafield . " > '" . $filtervalue ."'";
+                            break;
+                    case "LESS_THAN":
+                            $where .= " " . $filterdatafield . " < '" . $filtervalue ."'";
+                            break;
+                    case "GREATER_THAN_OR_EQUAL":
+                            $where .= " " . $filterdatafield . " >= '" . $filtervalue ."'";
+                            break;
+                    case "LESS_THAN_OR_EQUAL":
+                            $where .= " " . $filterdatafield . " <= '" . $filtervalue ."'";
+                            break;
+                    case "STARTS_WITH":
+                            $where .= " " . $filterdatafield . " LIKE '" . $filtervalue ."%'";
+                            break;
+                    case "ENDS_WITH":
+                            $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."'";
+                            break;
+                }
+
+                if ($i == $filterscount - 1)
+                {
+                        $where .= ")";
+                }
+
+                $tmpfilteroperator = $filteroperator;
+                $tmpdatafield = $filterdatafield;
+            }
+        }
+        $orderby = "";
+        $sortdatafield = $this->input->get("sortdatafield");
+        $sortorder = $this->input->get("sortorder");
+        if (isset($sortdatafield) && isset($sortorder) && ($sortorder == "asc"  || $sortorder == "desc"))
+        {
+            $sortdatafield = str_replace("([^A-Za-z0-9])", ' ', $sortdatafield);
+            $orderby = "order by " . $sortdatafield . " " . $sortorder;
+        }
+        $pagenum = 0;
+        if ($this->input->get("pagenum")){
+            $pagenum = (int)($this->input->get("pagenum"));
+        }
+        $pagesize = 1000;
+        if ($this->input->get("pagesize")){
+            $pagesize = (int)($this->input->get("pagesize"));
+        }
+        $start = $pagenum * $pagesize;
+        $usertype = $this->input->get("userType");
+        $userId = $this->input->get("userId");
+        $result = $this->User_appointment_model->get_all($where,$start,$pagesize,$orderby,$usertype,$userId);
+        // get total records in user_profile
+        $count = $this->User_appointment_model->total_rows($where);
+        if(isset($count) && $count>0 && isset($result) && isset($result[0]) && isset($result[0]["appointment_time"])){
+            $result[0]["totalRecords"] = $count;
+        }
+        echo json_encode($result);
+    }
 
     public function index()
     {
@@ -83,13 +189,15 @@ class User_appointment extends CI_Controller
     public function create() 
     {
         $data = array(
-            'user_id' => 1,
+            'user_id' => $this->input->post('user_id',TRUE),
             'appointment_time' => $this->input->post('appointment',TRUE),
             'status' => 'Created',
             'active' => 1,
             'deleted' => 0,
-            'cancelled_by' => Null
+            'cancelled_by' => $this->input->post('cancelled_by',TRUE),
+            'created_by' => $this->input->post('userType',TRUE)
         );
+      // echo json_encode($data);
 
         $result = $this->User_appointment_model->insert($data);
          if($result){
@@ -107,15 +215,12 @@ class User_appointment extends CI_Controller
     {
         
         $data = array(
-
-            'user_id' => $this->input->post('user_id',TRUE),
             'appointment_time' => $this->input->post('appointment',TRUE),
-            'status' => $this->input->post('status',TRUE),
+            'status' => $this->input->post('status'),
             'active' => $this->input->post('active',TRUE),
             'deleted' => $this->input->post('deleted',TRUE),
             'cancelled_by' => $this->input->post('cancelled_by',TRUE)
         );
-
         $result = $this->User_appointment_model->update($this->input->post('id', TRUE), $data);
         if($result){
             $response = array();
