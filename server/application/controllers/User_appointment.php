@@ -116,6 +116,8 @@ class User_appointment extends CI_Controller
         {
             $sortdatafield = str_replace("([^A-Za-z0-9])", ' ', $sortdatafield);
             $orderby = "order by " . $sortdatafield . " " . $sortorder;
+        }else{
+            $orderby = "order by app.created_at desc";
         }
         $pagenum = 0;
         if ($this->input->get("pagenum")){

@@ -17,7 +17,7 @@ function createorUpdateAppointment(from,obj){
   }
     var appointment_details = $('#appointmentform').serialize();
     var appointment_date = $("#appointment_date").val();
-    var appointment_time = $("#appointment_time").val();
+    var appointment_time = $("input[name=appointment_time]:checked").val();
     if(from && from == "delete"){
       appointment_details = obj;
       appointment_date = obj.appointment_date;
@@ -64,7 +64,7 @@ function createorUpdateAppointment(from,obj){
                     $('#appointment_error').html(data.error);
                     $('#appointment_error').show();
                     $('#appointment_date').val('');
-                    $('#appointment_time').val('');
+                    $('input[name=appointment_time]').attr('checked',false);
                     $('#appointment_id').val('');
                 }
             }
@@ -101,13 +101,15 @@ function getappointmentTimesforSlots(date,start,end,duration,slots){
   return slots;
 }
 function getappointmentsettings(date){
-  $('#appointment_time')
-              .find('option')
-              .remove()
-              .end()
-              .append($("<option></option>")
-                            .attr("value","")
-                            .text("Select Slot")); 
+  // $('#appointment_time')
+  //             .find('option')
+  //             .remove()
+  //             .end()
+  //             .append($("<option></option>")
+  //                           .attr("value","")
+  //                           .text("Select Slot"));
+  $('.appointmenttimebtngroup').html("");
+  $('input[type=radio][name=appointment_time]').remove();           
   $.ajax({
       type: "get",
       url: site_url + 'User_appointment/getDefaultAppointmetSettings',
@@ -142,11 +144,13 @@ function getappointmentsettings(date){
           slots = slots.filter(function(val) {
             return bookedslots.indexOf(val) == -1;
           });
+          $('.appointmenttimebtngroup').html("");
           if (slots && slots.length>0) {
             $.each(slots, function(key, value) {   
-              $('#appointment_time').append($("<option></option>")
-                            .attr("value",value)
-                            .text(value)); 
+              // $('#appointment_time').append($("<option></option>")
+              //               .attr("value",value)
+              //               .text(value)); 
+              $('.appointmenttimebtngroup').append('<label class="btn btn-default"><input type="radio" id="_'+value+'" name="appointment_time" value="'+value+'" />'+value+'</label>')
             });
           };
         }; 
@@ -156,7 +160,7 @@ function getappointmentsettings(date){
 function getAddAppointmentForm(){
   $('.listscreen').hide();
   $('.addscreen').show();
-  $('#appointment_time').val("");
+  $('input[name=appointment_time]').attr('checked',false);
   $('#appointment_date').val("");
   $('#appointment_id').val("");
   $('#status').val("");
@@ -177,37 +181,11 @@ function deleteAppointmentConfirmDetails(id,data) {
     updateUser('delete',obj);
   }
 }
-// function getAppointmentdeatils(id){
-//   $('.listscreen').hide();
-//   $('.addscreen').show();
-//   $('#appointment_time').val("");
-//   $('#appointment_date').val("");
-//   $('#appointment_id').val("");
-//   $('#status').val("");
-//   $('#active').val("");
-//   $.ajax({
-//       type: "get",
-//       url: site_url + 'User_appointment/read/'+id,
-//       success: function (result) {
-//         var data = $.parseJSON(result);
-//         if (data.success) {
-//           console.log("correct login");
-//           $('.modal').modal('hide');
-//           if (data.appointment) {
-//             $('#appointment_time').val(data.appointment.time);
-//             $('#appointment_date').val(data.appointment.date);
-//             $('#appointment_id').val(data.appointment.id);
-//             $('#status').val(data.appointment.status);
-//             $('#active').val(data.appointment.active);
-//           } 
-//         } 
-//       }
-//     });
-// }
+
 function getAppointmentdeatils(id){
   $('.listscreen').hide();
   $('.addscreen').show();
-  $('#appointment_time').val("");
+  $('input[name=appointment_time]').attr('checked',false);
   $('#appointment_date').val("");
   $('#appointment_id').val("");
   $('#status1').val("");
@@ -222,7 +200,8 @@ function getAppointmentdeatils(id){
           $('.modal').modal('hide');
           if (data.appointment) {
             $('#appointment_date').val(data.appointment.date);
-            $('#appointment_time').val(data.appointment.time);
+            //$('#appointment_time').val(data.appointment.time);
+            $('#_'+data.appointment.time).attr('checked',true);
             $('#appointment_id').val(data.appointment.id);
             
             $('#active').val(data.appointment.active);
@@ -236,11 +215,14 @@ function getAppointmentdeatils(id){
             $('#status1').val(data.appointment.status);
             getappointmentsettings(data.appointment.date);
             setTimeout(function  () {
-                 $('#appointment_time').append($("<option></option>")
-                            .attr("value",data.appointment.time)
-                            .text(data.appointment.time));
-               $('#appointment_time').val(data.appointment.time);
+                 // $('#appointment_time').append($("<option></option>")
+                 //            .attr("value",data.appointment.time)
+                 //            .text(data.appointment.time));
+                $('.appointmenttimebtngroup').append('<label class="btn btn-default active"><input type="radio" id="_'+data.appointment.time+'" name="appointment_time" value="'+data.appointment.time+'" />'+data.appointment.time+'</label>')
+                $('#_'+data.appointment.time).attr('checked',true);
+               //$('#appointment_time').val(data.appointment.time);
             },500);
+           
 
           } 
         } 
