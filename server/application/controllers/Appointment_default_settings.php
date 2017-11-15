@@ -149,38 +149,27 @@ class Appointment_default_settings extends CI_Controller
 
          
     }
-    
-    public function update_action() 
+    public function UpdategeneralSettings() 
     {
-        $this->_rules();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
-        } else {
-            $data = array(
-		'day' => $this->input->post('day',TRUE),
-		'start_1' => $this->input->post('start_1',TRUE),
-		'end_1' => $this->input->post('end_1',TRUE),
-		'start_2' => $this->input->post('start_2',TRUE),
-		'end_2' => $this->input->post('end_2',TRUE),
-		'start_3' => $this->input->post('start_3',TRUE),
-		'end_3' => $this->input->post('end_3',TRUE),
-		'start_4' => $this->input->post('start_4',TRUE),
-		'end_4' => $this->input->post('end_4',TRUE),
-		'start_5' => $this->input->post('start_5',TRUE),
-		'end_5' => $this->input->post('end_5',TRUE),
-		'start_1_duration' => $this->input->post('start_1_duration',TRUE),
-		'start_2_duration' => $this->input->post('start_2_duration',TRUE),
-		'start_3_duration' => $this->input->post('start_3_duration',TRUE),
-		'start_4_duration' => $this->input->post('start_4_duration',TRUE),
-		'start_5_duration' => $this->input->post('start_5_duration',TRUE),
-		'start_6_duration' => $this->input->post('start_6_duration',TRUE),
+        
+         $data = array(
+		'show_appointments_before_days' => $this->input->post('show_appointments_before_days',TRUE),
+		'cancellation_time_days' => $this->input->post('cancellation_time_days',TRUE),
+		'lock_attempts' => $this->input->post('lock_attempts',TRUE),
+		'id' => $this->input->post('id',TRUE),
+		
 	    );
-
-            $this->Appointment_default_settings_model->update($this->input->post('id', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('appointment_default_settings'));
+         $result =  $this->Appointment_default_settings_model->UpdategeneralSettings($this->input->post('id',TRUE),$data);
+        if($result){
+            $response = array();
+            $response['status']=true;
+            $response['success'] = 'Update Employee Successfully.';
+            echo json_encode($response);
         }
+        else{
+            echo FALSE;
+        }
+
     }
     
     public function delete($id) 

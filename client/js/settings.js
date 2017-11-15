@@ -78,7 +78,10 @@ function getSettingsList() {
                                             dayslotobj['duration'] =
                                                 defaultset ['start_' + i + '_duration'];
                                         };
-                                        dayset.slots.push(dayslotobj);
+                                        if (dayslotobj['start'] != "" || dayslotobj['end'] != "" || (dayslotobj['duration'] != "" && dayslotobj['duration'] != "0")) {
+                                            dayset.slots.push(dayslotobj);
+                                        };
+                                        
                                     };
 
                                 };
@@ -126,7 +129,24 @@ function getSettingsList() {
                     };
                   });
                 };
-                
+                //general settings form
+                if (data.settings.generalSettings && data.settings.generalSettings.length > 0) {
+                    var general = data.settings.generalSettings;
+                    if (general && general[0]) {
+                        if (general[0].show_appointments_before_days) {
+                            $('#show_appointments_before_days').val(general[0].show_appointments_before_days)
+                        };
+                        if (general[0].cancellation_time_days) {
+                            $('#cancellation_time_days').val(general[0].cancellation_time_days)
+                        };
+                        if (general[0].id) {
+                            $('#general_id').val(general[0].id)
+                        };
+                        if (general[0].lock_attempts) {
+                            $('#lock_attempts').val(general[0].lock_attempts)
+                        };
+                    };
+                };
             };
         }
     });
@@ -146,6 +166,46 @@ function removeDefaultSettings (classname,index) {
             $('.'+classname)[0].children[index].remove()
         };
     };
+}
+function UpdategeneralSettings () {
+    $('#general_success').html('');
+     $('#general_error').html('');
+     $('#general_success').hide();
+     $('#general_error').hide();
+    var daysbefore = $('#show_appointments_before_days').val();
+    var cancelbefore = $('#cancellation_time_days').val();
+    var lockattempts = $('#lock_attempts').val();
+    if ((daysbefore == null || daysbefore == '0') || (cancelbefore == null || cancelbefore == '0') || (lockattempts == null || lockattempts == '0')) {
+        $('#general_error').html('Please Enter valid values to all fields.');
+        $('#general_error').show();
+    }else{
+        var generaldetails = $('#generalsettingsform').serialize();
+         $.ajax({
+            type: "POST",
+            url: site_url + "Appointment_default_settings/UpdategeneralSettings",
+            data: generaldetails,
+            success: function (result) {
+                var data = $.parseJSON(result);
+                if (data.success) {
+                    $('#general_success').html('Update settings Successfully.');
+                    $('#general_success').show();
+                  setTimeout(function () {
+                      $('#general_success').hide();
+                      
+                  }, 2000);
+                }
+                else {
+                    $('#general_error').html(data.error);
+                    $('#general_error').show();
+                    $('#show_appointments_before_days').val('');
+                    $('#cancellation_time_days').val('');
+                    $('#lock_attempts').val('');
+                    $('#general_id').val('');
+                }
+            }
+        });
+    };
+
 }
 function UpdateDefaultSettings () {
     var default_settings = $('#defaultsettingsform').serializeArray();

@@ -105,6 +105,19 @@ class Appointment_default_settings_model extends CI_Model
         
     }
 
+     // update genral settings data
+    function UpdategeneralSettings($id, $data)
+    {
+        if (isset($id)) {
+           $this->db->where($this->id, $id);
+            $this->db->update('general_settings', $data);
+            return true;
+        }else{
+            return false;
+        };
+        
+    }
+
     // delete data
     function delete($id)
     {

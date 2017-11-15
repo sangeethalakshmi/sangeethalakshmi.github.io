@@ -155,50 +155,42 @@
                         </div>
                         <div class="panel panel-default">
                           <div class="panel-heading">
-                            <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">Override settings. </a> </h4>
+                            <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">General settings. </a> </h4>
                           </div>
                           <div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;">
                             <div class="panel-body">
-                              <div class="row">
-                                  <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="input-group"> <span class="input-group-btn">
-                                      <button class="btn btn-success" type="button"><i class="fa fa-user"></i></button>
-                                      </span>
-                                      <input id="uname" type="text" class="form-control" placeholder="Full Name">
+                                <form class="form-horizontal" id="generalsettingsform" name="generalsettingsform">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="show_appointments_before_days">Appointment books before on:</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name = "show_appointments_before_days" id="show_appointments_before_days" placeholder="please enter no. of days" required>
+                                              <span id="show_appointments_before_days_msg"></span>
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="control-label col-sm-2" for="cancellation_time_days">Cancellation befor:</label>
+                                            <div class="col-sm-10"> 
+                                              <input type="text" class="form-control" id="cancellation_time_days" name = "cancellation_time_days" placeholder="please enter no. of days" required>
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="control-label col-sm-2" for="lock_attempts">Lock attempts:</label>
+                                            <div class="col-sm-10"> 
+                                              <input type="text" class="form-control" id="lock_attempts" name = "lock_attempts" placeholder="please enter no. of attempts" required>
+                                            </div>
+                                          </div>
+                                          <input type="hidden" class="form-control" id="general_id" name = "id" >
+                                            <span id="general_success" class="text-success"></span>
+                                            <span id="general_error" class="text-danger"></span>
+                                          <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                <a onclick="UpdategeneralSettings()" class="btn btn-default">Save</a>
+                                                <a onclick="cancelDefaultSettings()" class="btn btn-default">Cancel</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <!-- /input-group --> 
-                                  </div>
-                                  <!-- /.col-lg-6 -->
-                                  <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="input-group"> <span class="input-group-btn">
-                                      <button class="btn btn-success" type="button"><i class="fa fa-envelope"></i></button>
-                                      </span>
-                                      <input id="uemail" type="text" class="form-control" placeholder="Email">
-                                    </div>
-                                    <!-- /input-group --> 
-                                  </div>
-                                  <!-- /.col-lg-6 -->
-                                  <div class="col-lg-12">
-                                    <div class="form-group">
-                                      <textarea id="message" class="form-control" rows="8"></textarea>
-                                    </div>
-                                    <!-- /input-group --> 
-                                  </div>
-                                  <p id="err"></p>
-                                  <div class="form-group">
-                                    <div class="col-lg-8 col-md-8 col-sm-12">
-                                      <div class="checkbox">
-                                        <label>
-                                        <input type="checkbox" id="hs_checkbox" class="css-checkbox lrg" checked="checked">
-                                        <label for="hs_checkbox" name="checkbox69_lbl" class="css-label lrg hs_checkbox">Receive Your Comments By Email</label>
-                                        </label>
-                                      </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
-                                      <button id="em_sub" class="btn btn-success pull-right" type="submit">Send</button>
-                                    </div>
-                                  </div>
-                                </div>
+                                </form>
                             </div>
                           </div>
                         </div>
@@ -207,7 +199,50 @@
                             <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">General settings </a> </h4>
                           </div>
                           <div id="collapseThree" class="panel-collapse collapse" style="height: 0px;">
-                            <div class="panel-body"> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS. </div>
+                            <div class="panel-body"> 
+                               <form class="form-horizontal" id="generalsettingsform" name="generalsettingsform">
+                                <div class="row">
+                                      <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="input-group"> <span class="input-group-btn">
+                                          <button class="btn btn-success" type="button"><i class="fa fa-user"></i></button>
+                                          </span>
+                                          <input id="uname" type="text" class="form-control" placeholder="Full Name">
+                                        </div>
+                                        <!-- /input-group --> 
+                                      </div>
+                                      <!-- /.col-lg-6 -->
+                                      <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="input-group"> <span class="input-group-btn">
+                                          <button class="btn btn-success" type="button"><i class="fa fa-envelope"></i></button>
+                                          </span>
+                                          <input id="uemail" type="text" class="form-control" placeholder="Email">
+                                        </div>
+                                        <!-- /input-group --> 
+                                      </div>
+                                      <!-- /.col-lg-6 -->
+                                      <div class="col-lg-12">
+                                        <div class="form-group">
+                                          <textarea id="message" class="form-control" rows="8"></textarea>
+                                        </div>
+                                        <!-- /input-group --> 
+                                      </div>
+                                      <p id="err"></p>
+                                      <div class="form-group">
+                                        <div class="col-lg-8 col-md-8 col-sm-12">
+                                          <div class="checkbox">
+                                            <label>
+                                            <input type="checkbox" id="hs_checkbox" class="css-checkbox lrg" checked="checked">
+                                            <label for="hs_checkbox" name="checkbox69_lbl" class="css-label lrg hs_checkbox">Receive Your Comments By Email</label>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12">
+                                          <button id="em_sub" class="btn btn-success pull-right" type="submit">Send</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                               </form>
+                            </div>
                           </div>
                         </div>
                       </div>
