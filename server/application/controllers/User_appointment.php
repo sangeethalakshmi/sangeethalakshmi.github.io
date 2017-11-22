@@ -30,6 +30,22 @@ class User_appointment extends CI_Controller
         }
 
     }
+     public function getGeneralAppointmetSettings(){
+        $row = $this->User_appointment_model->getGeneralSettings();
+        if (!$row) {
+            $response = array();
+            $response['status']=false;
+            $response['error'] = "Settings not there";
+            echo json_encode($response);
+        }else { 
+            $response = array();
+            $response['status']=true;
+            $response['success'] = 'Settings found Successfully';
+            $response['generalSettings'] = $row;
+            echo json_encode($response);
+        }
+
+    }
     public function getAppointments(){
          $where = " WHERE app.active = 1 ";
         $filterscount = $this->input->get('filterscount');

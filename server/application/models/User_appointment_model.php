@@ -15,7 +15,17 @@ class User_appointment_model extends CI_Model
         parent::__construct();
     }
 
-    
+    // get general Settings
+    function getGeneralSettings()
+    {
+        
+        $general =  $this->db->get('general_settings')->row();
+        if (isset($general) && isset($general->id)){ 
+            return $general;
+        }else{
+            return false;
+        }
+    }
 
     // get Appointmet Settings
     function getAppointmetSettings($date)
