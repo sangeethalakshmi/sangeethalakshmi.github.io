@@ -64,6 +64,7 @@ function createorUpdateAppointment(from,obj){
                     $('#appointment_error').html(data.error);
                     $('#appointment_error').show();
                     $('#appointment_date').val('');
+                    $('#description').val('');
                     $('input[name=appointment_time]').attr('checked',false);
                     $('#appointment_id').val('');
                 }
@@ -101,13 +102,6 @@ function getappointmentTimesforSlots(date,start,end,duration,slots){
   return slots;
 }
 function getappointmentsettings(date){
-  // $('#appointment_time')
-  //             .find('option')
-  //             .remove()
-  //             .end()
-  //             .append($("<option></option>")
-  //                           .attr("value","")
-  //                           .text("Select Slot"));
   $('.appointmenttimebtngroup').html("");
   $('input[type=radio][name=appointment_time]').remove();           
   $.ajax({
@@ -165,7 +159,7 @@ function getAddAppointmentForm(){
   $('#appointment_id').val("");
   $('#status').val("");
   $('#active').val("");
-  loadAddAppointmentform();
+  loadAddAppointmentform('addform');
 }
 function deleteAppointmentConfirmDetails(id,data) {
   if (confirm('Are you sure want to delete?')) {
@@ -200,7 +194,7 @@ function getAppointmentdeatils(id){
           $('.modal').modal('hide');
           if (data.appointment) {
             $('#appointment_date').val(data.appointment.date);
-            //$('#appointment_time').val(data.appointment.time);
+            $('#description').val(data.appointment.description);
             $('#_'+data.appointment.time).attr('checked',true);
             $('#appointment_id').val(data.appointment.id);
             
@@ -354,33 +348,45 @@ function renderAppointmentsGrid(){
 
 
 }
-function loadAddAppointmentform(){
+function loadAddAppointmentform(from){
   $('.listscreen').hide();
-  $('.addscreen').show();
-  var dayaftertomorrow = new Date();
-  dayaftertomorrow.setDate(dayaftertomorrow.getDate()+2);
-  var date = dayaftertomorrow.getFullYear() + '-' + (dayaftertomorrow.getMonth() + 1) + '-' + dayaftertomorrow.getDate();
-  getappointmentsettings(date);
-  $('#appointment_date').datepicker({
-        format: "yyyy-mm-dd",
-        startDate: "+2d",
-         autoclose: true
+  $('.addscreen').hide();
+  if (from && from == 'listform') {
+    $('.listscreen').show();
+    renderAppointmentsGrid();
+  }else{
+    $('.listscreen').hide();
+      $('.addscreen').show();
+      var dayaftertomorrow = new Date();
+      dayaftertomorrow.setDate(dayaftertomorrow.getDate()+2);
+      var date = dayaftertomorrow.getFullYear() + '-' + (dayaftertomorrow.getMonth() + 1) + '-' + dayaftertomorrow.getDate();
+      getappointmentsettings(date);
+      $('#appointment_date').datepicker({
+            format: "yyyy-mm-dd",
+            startDate: "+2d",
+             autoclose: true
 
-    }).on('changeDate', function(e) {
-      if (e && e.date) {
-        var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
-        getappointmentsettings(date1)
-      };
-    });
-    $("#appointment_date").datepicker("setDate", dayaftertomorrow);
-    setTimeout(function  () {
-      $('.showhiddenstatus').show();
-      $('.hidehiddenstatus').hide();
-    },1000);
+        }).on('changeDate', function(e) {
+          if (e && e.date) {
+            var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
+            getappointmentsettings(date1)
+          };
+        });
+        $("#appointment_date").datepicker("setDate", dayaftertomorrow);
+        setTimeout(function  () {
+          $('.showhiddenstatus').show();
+          $('.hidehiddenstatus').hide();
+        },1000);
+  };
+  
 }
 $(document).ready(function () {
   if (localStorage.getItem('usertype')) {
-    loadAddAppointmentform();
+    if (localStorage.getItem('usertype') != 'User') {
+      loadAddAppointmentform('listform');
+    }else{
+      loadAddAppointmentform('addform');
+    };
   }else{
     $('#myModal').modal('show');
   };

@@ -193,6 +193,7 @@ class User_appointment extends CI_Controller
         $data = array(
             'user_id' => $this->input->post('user_id',TRUE),
             'appointment_time' => $this->input->post('appointment',TRUE),
+            'description' => $this->input->post('description',TRUE),
             'status' => 'Created',
             'active' => 1,
             'deleted' => 0,
@@ -219,6 +220,7 @@ class User_appointment extends CI_Controller
         $data = array(
             'appointment_time' => $this->input->post('appointment',TRUE),
             'status' => $this->input->post('status'),
+            'description' => $this->input->post('description',TRUE),
             'active' => $this->input->post('active',TRUE),
             'deleted' => $this->input->post('deleted',TRUE),
             'cancelled_by' => $this->input->post('cancelled_by',TRUE)
