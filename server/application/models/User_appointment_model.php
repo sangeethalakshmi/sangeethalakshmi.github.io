@@ -55,7 +55,7 @@ class User_appointment_model extends CI_Model
         // build the query.
         if (isset($usertype) && isset($userId)) {
             if ( $usertype != 'Super Admin' ) {
-               $query = "SELECT app.*,full_name,email_address,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
+               $query = "SELECT app.*,full_name,email_address as email,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
 
             }else{
                 $query = "SELECT app.*,full_name,email,phone_number  FROM " .$this->table .' app  LEFT JOIN admin as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;

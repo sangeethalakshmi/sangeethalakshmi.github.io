@@ -422,7 +422,6 @@ function loadAddAppointmentform(from){
                         return true;
                     }
                  }
-
             }).on('changeDate', function(e) {
               if (e && e.date) {
                 var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
