@@ -444,7 +444,12 @@ $(document).ready(function () {
     if (localStorage.getItem('usertype') != 'User') {
       loadAddAppointmentform('listform');
     }else{
-      loadAddAppointmentform('addform');
+      if (window.location.pathname && window.location.pathname.indexOf('myappointments.html')>-1) {
+        loadAddAppointmentform('listform');
+      }else{
+        loadAddAppointmentform('addform');
+      };
+      
     };
   }else{
     $('#myModal').modal('show');
