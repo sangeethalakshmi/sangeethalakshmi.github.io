@@ -19,7 +19,8 @@
         <link rel="stylesheet" href="css/main.css" media="screen"/>
         <link rel="stylesheet"  type="text/css" href="css/color/color.css"/>
         <link rel="stylesheet" href="css/jqwidgets/styles/jqx.base.css" type="text/css" />
-        <link rel="stylesheet" href="css/jqwidgets/styles/jqx.classic.css" type="text/css" />
+         <link rel="stylesheet" href="css/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
+        <!-- <link rel="stylesheet" href="css/jqwidgets/styles/jqx.classic.css" type="text/css" /> -->
          <link rel="stylesheet" href="css/bootstrap-datepicker/bootstrap-datepicker.css" type="text/css" />
         <!-- <script type="text/javascript">
         //   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -170,7 +171,7 @@
                          <div class="form-group hidehiddenstatus">
                           <label class="control-label col-sm-2" for="status">Status</label>
                           <div class="col-sm-8">
-                            <select class="form-control" id="status1" name="status">
+                            <select class="form-control" id="status1"  name="status">
                                 <option value = "">Select</option>
                                  <option value = "CREATED">Created</option>
                                  <option value = "COMPLETED">Completed</option>
@@ -181,7 +182,7 @@
                           <span class="text-danger" id="appointment_time_error"></span>
                         </div>
                         <input type="hidden" class="form-control" id="appointment_id" name="id">
-                        <input type="hidden" class="form-control showhiddenstatus" id="status1" name="status1">
+                        <input type="hidden" class="form-control showhiddenstatus" id="status" name="status1">
                         <input type="hidden" class="form-control" id="active" name="active">
                         <span id="appointment_success" class="text-success"></span>
                         <span id="appointment_error" class="text-danger"></span>

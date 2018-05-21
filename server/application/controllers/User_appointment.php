@@ -148,7 +148,7 @@ class User_appointment extends CI_Controller
         $userId = $this->input->get("userId");
         $result = $this->User_appointment_model->get_all($where,$start,$pagesize,$orderby,$usertype,$userId);
         // get total records in user_profile
-        $count = $this->User_appointment_model->total_rows($where);
+        $count = $this->User_appointment_model->total_rows($where,$usertype,$userId);
         if(isset($count) && $count>0 && isset($result) && isset($result[0]) && isset($result[0]["appointment_time"])){
             $result[0]["totalRecords"] = $count;
         }

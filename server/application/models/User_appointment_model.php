@@ -58,8 +58,13 @@ class User_appointment_model extends CI_Model
                $query = "SELECT app.*,full_name,email_address as email,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
 
             }else{
-                $query = "SELECT app.*,full_name,email,phone_number  FROM " .$this->table .' app  LEFT JOIN admin as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
 
+                $query = 'select * from (select app.*,a.email,a.full_name,a.phone_number from '.$this->table .' as app  LEFT JOIN 
+                 admin as a ON (app.user_id = a.id and app.created_by != "User")
+                 UNION
+                select app.*,a.email_address,a.full_name,a.phone_number from '.$this->table .' as app LEFT JOIN 
+                user_profile as a  ON (app.user_id = a.id and app.created_by = "User")) as app'.
+                 $where.' and app.email is not null '.$orderby." LIMIT ". $start.','. $pagesize;
             }
 
         }else{
@@ -71,8 +76,11 @@ class User_appointment_model extends CI_Model
     
 
         // get total rows
-    function total_rows($where = NULL) {
-    $query = "SELECT * FROM " .$this->table .' app '. $where;
+    function total_rows($where = NULL,$usertype=NULL,$userId) {
+        $query = "SELECT * FROM " .$this->table .' app '. $where;
+        if ( $usertype != 'Super Admin' ) {
+            $query = $query.' and user_id =  '.$userId;
+        }
         $query = $this->db->query($query);
         $count = $query->num_rows();
         return $count;
@@ -82,13 +90,13 @@ class User_appointment_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
         $this->db->like('id', $q);
-    	$this->db->or_like('user_id', $q);
-    	$this->db->or_like('appointment_time', $q);
-    	$this->db->or_like('status', $q);
-    	$this->db->or_like('active', $q);
-    	$this->db->or_like('deleted', $q);
-    	$this->db->or_like('cancelled_by', $q);
-    	$this->db->limit($limit, $start);
+        $this->db->or_like('user_id', $q);
+        $this->db->or_like('appointment_time', $q);
+        $this->db->or_like('status', $q);
+        $this->db->or_like('active', $q);
+        $this->db->or_like('deleted', $q);
+        $this->db->or_like('cancelled_by', $q);
+        $this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

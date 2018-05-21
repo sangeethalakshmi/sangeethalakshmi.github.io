@@ -6,7 +6,7 @@
 
 
 
-function createorUpdateAppointment(from,obj){
+function createorUpdateAppointment(from,obj,details){
   var functionname =  "";
   $('#appointment_date_error').html("");
   $('#appointment_time_error').html("");
@@ -19,7 +19,7 @@ function createorUpdateAppointment(from,obj){
     var appointment_date = $("#appointment_date").val();
     var appointment_time = $("input[name=appointment_time]:checked").val();
     if(from && from == "delete"){
-      appointment_details = obj;
+      appointment_details = details;
       appointment_date = obj.appointment_date;
       appointment_time =  obj.appointment_time;
       functionname = 'update/'+obj.id;
@@ -30,13 +30,17 @@ function createorUpdateAppointment(from,obj){
       if ( functionname == 'create') {
         var userdetails = JSON.parse(localStorage.getItem('user'));
         appointment_details += '&user_id='+ userdetails.id;
-        appointment_details += '&userType='+ userdetails.role;
+        if (localStorage.getItem('usertype') != 'User' ){
+          appointment_details += '&userType='+ userdetails.role;
+        }else{
+          appointment_details += '&userType='+ localStorage.getItem('usertype');
+        };
         appointment_details += '&cancelled_by=NULL';
       }else{
         if (localStorage.getItem('usertype') != 'User' && $('#status1').val() == "CANCELLED") {
-          appointment_details += '&cancelled_by=DOCTOR';
+          appointment_details += '&cancelled_by=Super Admin';
         }else{
-          appointment_details += '&cancelled_by=NULL';
+          appointment_details += '&cancelled_by=User';
         }
       };
     };
@@ -163,18 +167,24 @@ function getAddAppointmentForm(){
   $('#active').val("");
   loadAddAppointmentform('addform');
 }
-function deleteAppointmentConfirmDetails(id,data) {
-  if (confirm('Are you sure want to delete?')) {
+function deleteAppointmentConfirmDetails(id,data,type) {
+  var text = "delete";
+  if (type == "cancel") {
+    text = "cancel";
+  };
+  if (confirm('Are you sure want to '+text+'?')) {
     var obj = {
-      'full_name': data.full_name,
-      'email_address': data.email_address,
-      'phone_number':data.phone_number,
-      'id':data.id,
-      'role': data.role,
-      'status': data.status,
-      'active':0
+      "id":data.id,
+      'appointment_time':moment(data.appointment_time).format("HH:mm"),
+      'appointment_date':moment(data.appointment_time).format("YYYY-MM-DD")
     };
-    updateUser('delete',obj);
+    appointment_details = 'id='+data.id+'&user_id='+data.user_id+'&full_name='+ data.full_name+'&email_address='+ data.email+'&phone_number='+ data.phone_number;
+    if (type == "cancel") {
+      appointment_details += '&status=CANCELLED&deleted=0&active=1'
+    }else if (type == 'delete') {
+      appointment_details += '&status='+ data.status+'&deleted=1&active=0';
+    };
+    createorUpdateAppointment('delete',obj,appointment_details);
   }
 }
 
@@ -203,7 +213,6 @@ function getAppointmentdeatils(id){
             $('#description').val(data.appointment.description);
             $('#_'+data.appointment.time).attr('checked',true);
             $('#appointment_id').val(data.appointment.id);
-            
             $('#active').val(data.appointment.active);
             if (localStorage.getItem('usertype') && localStorage.getItem('usertype') != 'User') {
               $('.showhiddenstatus').hide();
@@ -247,6 +256,8 @@ function renderAppointmentsGrid(){
         name: 'status',
         type: 'string'
       },{name:"id",
+      type:"number"},
+      {name:"user_id",
       type:"number"}],
         cache: false,
     url: site_url + 'User_appointment/getAppointments',
@@ -265,7 +276,64 @@ function renderAppointmentsGrid(){
       }
     }
   };
-  
+  var columns = [{
+        text: 'Name',
+        datafield: 'full_name',
+        width:'20%'
+      }, {
+        text: 'Phone',
+        datafield: 'phone_number',
+        width:'13%'
+      }, {
+        text: 'Email',
+        datafield: 'email',
+        width:'24%'
+      }, {
+        text: 'Appointment',
+        datafield: 'appointment_time',width:'19%'
+      },
+      {
+        text: 'Status',
+        datafield: 'status',width:'10%'
+      },
+      {
+        text: 'Id',
+        datafield: 'id',hidden:true
+      },{
+        text: 'UserId',
+        datafield: 'user_id',hidden:true
+      },  {
+            text: 'Edit',
+            datafield: 'edit',
+            columntype: 'image',
+             width:'7%',
+            cellsrenderer: function () {
+              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-pencil"></i></a></div>';
+            }
+          }
+      
+    ];
+    if (localStorage.getItem('usertype') == 'Super Admin') {
+      columns.push({
+            text: 'Delete',
+            datafield: 'delete',
+            columntype: 'image',
+             width:'7%',
+            cellsrenderer: function () {
+              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="glyphicon glyphicon-trash"></i></a></div>';
+            }
+          })
+    }else{
+       columns.push({
+            text: 'Cancel',
+            datafield: 'cancel',
+            columntype: 'image',
+             width:'7%',
+            cellsrenderer: function () {
+              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-times-circle"></i></a></div>';
+            }
+          });
+    };
   var dataadapter = new $.jqx.dataAdapter(source,
   {
       formatData: function (data) {
@@ -286,59 +354,19 @@ function renderAppointmentsGrid(){
     autoheight: true,
     pageable: true,
     pagesize: 10,
-    pagesizeoptions: ['5', '10', '15'],
+     theme: 'energyblue',
+    //pagesizeoptions: ['5', '10', '15'],
     virtualmode: true,
     rendergridrows: function (obj) {
       return obj.data;
     },
-    columns: [{
-        text: 'Name',
-        datafield: 'full_name',
-        width:'20%'
-      }, {
-        text: 'Phone',
-        datafield: 'phone_number',
-        width:'15%'
-      }, {
-        text: 'Email',
-        datafield: 'email',
-        width:'25%'
-      }, {
-        text: 'Appointment',
-        datafield: 'appointment_time',width:'17%'
-      },
-      {
-        text: 'Status',
-        datafield: 'status',width:'10%'
-      },
-      {
-        text: 'Id',
-        datafield: 'id',hidden:true
-      }, {
-            text: 'Edit',
-            datafield: 'edit',
-            columntype: 'image',
-             width:'7%',
-            cellsrenderer: function () {
-              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-pencil"></i></a></div>';
-            }
-          },{
-            text: 'Delete',
-            datafield: 'delete',
-            columntype: 'image',
-             width:'7%',
-            cellsrenderer: function () {
-              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="glyphicon glyphicon-trash"></i></a></div>';
-            }
-          }
-      
-    ],
+    columns: columns,
     ready: function () {
       $('#appointmentsjqxgrid').on('cellclick', function (event) {
         var data = $('#appointmentsjqxgrid').jqxGrid('getrowdata', event.args.rowindex);
-        if (event.args.datafield === 'delete' && (event.args.rowindex || event.args.rowindex === 0)) {
+        if ((event.args.datafield === 'delete' || event.args.datafield === 'cancel') && (event.args.rowindex || event.args.rowindex === 0)) {
           if (data.id)
-            deleteUserConfirmDetails(data.id,data);
+            deleteAppointmentConfirmDetails(data.id,data,event.args.datafield);
         }else if (event.args.datafield === 'edit' && (event.args.rowindex || event.args.rowindex === 0)) {
           if (data.id)
             getAppointmentdeatils(data.id);
