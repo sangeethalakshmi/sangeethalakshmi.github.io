@@ -258,6 +258,7 @@ function renderAppointmentsGrid(){
       },{name:"id",
       type:"number"},
       {name:"user_id",
+      type:"number"},{name:"days",
       type:"number"}],
         cache: false,
     url: site_url + 'User_appointment/getAppointments',
@@ -276,6 +277,14 @@ function renderAppointmentsGrid(){
       }
     }
   };
+  var cellsrenderer = function (row, columnfield, value, defaulthtml, columnproperties) {
+      if (value < 2) {
+          return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-thumbs-up"></i></a></div>';
+      }
+      else {
+          return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-times-circle-o"></i></a></div>';
+      }
+  }
   var columns = [{
         text: 'Name',
         datafield: 'full_name',
@@ -326,12 +335,10 @@ function renderAppointmentsGrid(){
     }else{
        columns.push({
             text: 'Cancel',
-            datafield: 'cancel',
+            datafield: 'days',
             columntype: 'image',
              width:'7%',
-            cellsrenderer: function () {
-              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-times-circle"></i></a></div>';
-            }
+            cellsrenderer: cellsrenderer
           });
     };
   var dataadapter = new $.jqx.dataAdapter(source,
@@ -344,7 +351,7 @@ function renderAppointmentsGrid(){
       }
        
   });
- 
+  
   // initialize jqxGrid
   $("#appointmentsjqxgrid").jqxGrid({
     width: '100%',
@@ -364,9 +371,9 @@ function renderAppointmentsGrid(){
     ready: function () {
       $('#appointmentsjqxgrid').on('cellclick', function (event) {
         var data = $('#appointmentsjqxgrid').jqxGrid('getrowdata', event.args.rowindex);
-        if ((event.args.datafield === 'delete' || event.args.datafield === 'cancel') && (event.args.rowindex || event.args.rowindex === 0)) {
+        if ((event.args.datafield === 'delete' || (event.args.datafield === 'days' && event.args.value >= 2 )) && (event.args.rowindex || event.args.rowindex === 0)) {
           if (data.id)
-            deleteAppointmentConfirmDetails(data.id,data,event.args.datafield);
+            deleteAppointmentConfirmDetails(data.id,data,'cancel');
         }else if (event.args.datafield === 'edit' && (event.args.rowindex || event.args.rowindex === 0)) {
           if (data.id)
             getAppointmentdeatils(data.id);

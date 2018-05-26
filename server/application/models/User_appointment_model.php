@@ -53,9 +53,11 @@ class User_appointment_model extends CI_Model
     function get_all($where,$start,$pagesize,$orderby,$usertype,$userId)
     {
         // build the query.
+         $query1  = $this->db->select('cancellation_time_days as time');
+          $query1 = $this->db->get('general_settings')->result();
         if (isset($usertype) && isset($userId)) {
             if ( $usertype != 'Super Admin' ) {
-               $query = "SELECT app.*,full_name,email_address as email,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
+               $query = "SELECT app.*,DATEDIFF(app.appointment_time, now()) AS days,full_name,email_address as email,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
 
             }else{
 
