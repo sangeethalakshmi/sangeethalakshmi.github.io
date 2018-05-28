@@ -177,23 +177,24 @@ function renderUsersGrid(){
     autoheight: true,
     pageable: true,
     pagesize: 10,
-    pagesizeoptions: ['5', '10', '15'],
+    //pagesizeoptions: ['5', '10', '15'],
     virtualmode: true,
+     theme: 'bootstrap',
     rendergridrows: function (obj) {
       return obj.data;
     },
     columns: [{
         text: 'Name',
         datafield: 'full_name',
-        width:'20%'
+        width:'18%'
       }, {
         text: 'Phone',
         datafield: 'phone_number',
-        width:'15%'
+        width:'10%'
       }, {
         text: 'Email',
         datafield: 'email',
-        width:'25%'
+        width:'28%'
       }, {
         text: 'Role',
         datafield: 'role',width:'7%'
@@ -217,7 +218,7 @@ function renderUsersGrid(){
             text: 'Edit',
             datafield: 'edit',
             columntype: 'image',
-             width:'7%',
+             width:'6%',
             cellsrenderer: function () {
               return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-pencil"></i></a></div>';
             }
@@ -225,7 +226,7 @@ function renderUsersGrid(){
             text: 'Delete',
             datafield: 'delete',
             columntype: 'image',
-             width:'7%',
+             width:'6%',
             cellsrenderer: function () {
               return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="glyphicon glyphicon-trash"></i></a></div>';
             }

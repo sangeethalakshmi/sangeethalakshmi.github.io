@@ -73,6 +73,9 @@
     -moz-transition: box-shadow linear 0.1s;
     -o-transition: box-shadow linear 0.1s;
     transition: box-shadow linear 0.1s;
+    text-align: center !important;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .jqx-widget-content-bootstrap {
@@ -81,7 +84,7 @@
 }
 
 .jqx-widget-header-bootstrap {
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     border-color: #cccccc;
 }
 
@@ -166,7 +169,7 @@
 }
 
 .jqx-scrollbar-thumb-state-normal-bootstrap, .jqx-scrollbar-thumb-state-normal-horizontal-bootstrap {
-    background: #f5f5f5;
+    background: #ffffff;
     border-color: #b3b3b3;
 }
 

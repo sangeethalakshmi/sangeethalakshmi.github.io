@@ -361,7 +361,7 @@ function renderAppointmentsGrid(){
     autoheight: true,
     pageable: true,
     pagesize: 10,
-     theme: 'energyblue',
+     theme: 'bootstrap',
     //pagesizeoptions: ['5', '10', '15'],
     virtualmode: true,
     rendergridrows: function (obj) {

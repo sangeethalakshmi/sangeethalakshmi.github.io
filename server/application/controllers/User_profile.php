@@ -28,6 +28,16 @@ class User_profile extends CI_Controller
             $response['status']=true;
             $response['success'] = 'Logged in Successfully';
             $response['user'] = $result;
+
+            $this->load->library('email');
+
+            $this->email->from('sangeethalakshmi239@gmail.com', 'Sangeetha');
+            $this->email->to('sangeethalakshmi239@gmail.com');
+
+            $this->email->subject('Email Test');
+            $this->email->message('Testing the email class.');
+
+            $this->email->send();
             echo json_encode($response);
         }
 
@@ -264,6 +274,44 @@ class User_profile extends CI_Controller
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    }
+
+    public function authenticateSocialProvider(){
+        $userData = json_decode($this->input->post['userData']);
+        if(!empty($userData)){
+            $oauth_provider = $this->input->post['oauth_provider'];
+            $prevQuery = "SELECT * FROM users WHERE oauth_provider = '".$oauth_provider."' AND oauth_uid = '".$userData->id."'";
+            $prevQuery = $this->db->query($prevQuery);
+            $count = $prevQuery->num_rows();
+            if(!$count){
+                 $data = array(
+                    'full_name' => $userData->first_name,
+                    'phone_number' => $userData->phone,
+                    'email_address' => $userData->email,
+                    'status' => 'ACTIVE',
+                    'active' => 1,
+                    'deleted' => 0
+                );
+                $data['password'] = substr($userData->first_name, 0, 3).'1234';
+                $result = $this->User_profile_model->insert($data);
+            };
+        };
+        $arr=array();
+        $arr['user_email']=$userData->email;
+        $arr['user_password']=substr($userData->first_name, 0, 3).'1234';
+        $result=$this->User_profile_model->CheckforUserLogin($arr);
+        if (!$result) {
+            $response = array();
+            $response['status']=false;
+            $response['error'] = "User Email and Password Does not Match";
+            echo json_encode($response);
+        }else { 
+            $response = array();
+            $response['status']=true;
+            $response['success'] = 'Logged in Successfully';
+            $response['user'] = $result;
+            echo json_encode($response);
+        };
     }
 
 }
