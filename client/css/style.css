@@ -518,14 +518,14 @@ ul.pattern li #style {
 	margin-right:0;
 }
 .hs_social ul li a {
-	width:30px;
-	height:30px;
-	line-height:28px;
+	width: 14px;
+    height: 14px;
+	line-height: 5px;
 	display:block;
 	text-align: center;
 	vertical-align: middle;
 	color: #fff;
-	border: 1px solid rgba(0,0,0,0.2);
+	border: 0sspx solid rgba(0,0,0,0.2);
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
 	-ms-transition: all 0.3s;

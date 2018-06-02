@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var site_url = "http://renukakatta.org/sangeethalakshmi.github.io/server/index.php/"
+var site_url = "http://renukakatta.org/v2/server/index.php/"
 if(localStorage.getItem('usertype') == 'Super Admin'){
   $('.notforadmin').hide();
   $('.foradmin').show();
