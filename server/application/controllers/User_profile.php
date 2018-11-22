@@ -31,8 +31,8 @@ class User_profile extends CI_Controller
 
             $this->load->library('email');
 
-            $this->email->from('sangeethalakshmi239@gmail.com', 'Sangeetha');
-            $this->email->to('sangeethalakshmi239@gmail.com');
+            $this->email->from('email@gmail.com', 'Name');
+            $this->email->to('email@gmail.com');
 
             $this->email->subject('Email Test');
             $this->email->message('Testing the email class.');
