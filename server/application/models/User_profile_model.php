@@ -13,6 +13,7 @@ class User_profile_model extends CI_Model
     function __construct()
     {
         parent::__construct();
+        $this->db->reconnect();
     }
     
     // check weather the user present in our sysytem or not

@@ -13,7 +13,23 @@
         <link rel="icon" type="image/ico" href="favicon.ico" />
         <!--Google web fonts-->
 
-
+        <!-- <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff"> -->
         <!-- main css -->
         <link rel="stylesheet" href="css/main.css" media="screen"/>
         <link rel="stylesheet"  type="text/css" href="css/color/color.css"/>
@@ -36,13 +52,40 @@
             <div id="status"><img src="images/loader.gif" id="preloader_image" width="36" height="36" alt="loading image"/></div>
         </div>
         <!--pre loader end--> 
-
+        <div class="hlc_topheader">
+                <div class="container">
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="col-lg-4 col-md-6 col-sm-12 nopadding">
+                            <div class="col-md-2 hs_logo" id=""> <a href="index.html"> <img class="profileimage" src="images/samuel.jpg" alt=""> </a> </div>
+                            <div class="col-md-10  name_hs_logo" id=""> <p>Samuel Hahnemann</p><p>Classical Homoeopathy</p> </div>
+                            <!-- #logo --> 
+                        </div>
+                        <div class="col-lg-4 visible-lg text-center nopadding"> </div>
+                        <div class="col-lg-4 col-md-6 col-sm-2 text-right nopadding">
+                            <div class="col-md-10 nopadding name_hs_logo" id=""> <p>Dr. Katta Renuka </p><p>B.H.M.S., M.D., F.R.H.S.,</p> </div>
+                            <div class="col-md-2 hs_logo"> <a href="index.html"> <img class="profileimage" src="images/portfolio/drrenuka.jpg" alt=""> </a> </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row visible-sm visible-xs">
+                        <div class="col-xs-6 nopadding">
+                            <div class="col-xs-12 hs_logo" id=""> <a href="index.html"> <img class="profileimage" src="images/samuel.jpg" alt=""> </a> </div>
+                            <!-- #logo --> 
+                        </div>
+                        
+                        <div class="col-xs-6 text-right nopadding">
+                            <div class="col-xs-12 hs_logo"> <a href="index.html"> <img class="profileimage" src="images/portfolio/drrenuka.jpg" alt=""> </a> </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         <!--header start-->
         <header id="hs_header">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-2 col-md-2 col-sm-12">
-                        <div id="hs_logo" > <a href="index.html"> <img src="images/logo4.png" alt=""> </a> </div>
+                        <div id="hs_logo" > <a href="index.html"> <img src="images/logo_1.svg" alt=""> </a> </div>
                         <!-- #logo --> 
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-10">
@@ -52,8 +95,11 @@
                                 <li><a href="index.html" class="active">Home</a></li>
                                 <li class="notforadmin"><a href="cases.html">Cases</a></li>
                                 <li class="notforadmin"><a href="approach.html">Approach</a></li>
-                                <li class="notforadmin"><a href="articles.html">Articles</a></li>
-                                <li class="notforadmin showloginbutton"><a href="activities.html">Activities</a></li>
+                                <li class="notforadmin"><a href="articles.html">Articles</a>
+                                    <ul>
+                                            <li class="notforadmin showloginbutton"><a href="activities.html">Activities</a></li>
+                                    </ul>
+                                </li>
                                 <li class="notforadmin showloginbutton"><a href="peoplestalk.html">Peoples Talk</a>
                                 <li class="notforadmin"><a href="contacts.html">Contact</a></li>
                                 <li class="notforadmin showloginbutton"><a href="site.html">Map</a></li>
@@ -77,8 +123,8 @@
                                 <li><a target="_blank" href="https://www.facebook.com/renukakattadr/"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href=""><i class="fa fa-twitter"></i></a></li>
                                 <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-                                <li class="showloginbutton"><a class="fa fa-sign-in" data-toggle="modal" data-target="#myModal"></a></li>
-
+                                <li class="showloginbutton"><a  data-toggle="modal" data-target="#myModal"><i class="fa fa-sign-in"></i></a></li>
+                                <li class="showlogoutbutton"> <a onclick="doLogout()"><i class="fa fa-sign-out"></i></a></li>
                             </ul>
                         </div>
                         <div class="hs_search_box">
@@ -99,43 +145,23 @@
         </header>
         <!--header end--> 
 
-        <div class="hs_page_title">
-
-            <div class="container">
-                <div class="col-sm-2">
-
-                </div>
-                <div class="col-sm-8">
-                    <marquee class="scrolltext" align="right" behavior="alternate" dir="ltr" scrollamount="5">
-                        WELCOME TO HOMOEOPATHY CLINIC – THE CLASSICAL CLINIC
-                    </marquee>
-                </div>
-                <div class="col-sm-2">
-                    <ul >
-                    <li><a href="index.html">Home</a></li>
-                    <li class="showlogoutbutton"> <a onclick="doLogout()">Logout</a></li>
-                </ul>
-                </div>
-                
-                
-            </div>
-        </div>
+       
 
         <!--slider start-->
         <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel"> 
-            <ol class="carousel-indicators">
+            <!-- <ol class="carousel-indicators">
                 <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>
                 <li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
-            </ol>
+            </ol> -->
             <div class="carousel-inner">
-                <div class="item"> <img class="animated fadeInDown" src="images/slider/slider1.jpg" height="314" alt="...">
+                <div class="item active"> <img class="animated fadeInDown" src="images/slider/slider1.jpg" height="314" alt="...">
                     <div class="carousel-caption">
                         <h1 class="hs_slider_title animated bounceInDown"><a class="notbluehref" href="bookappointment.html">Book your Appointment</a></h1>
                         <p class="lead animated pulse">WELCOME TO HOMOEOPATHY CLINIC – THE CLASSICAL CLINIC.</p>
 
                     </div>
                 </div>
-                <div class="item active"> 
+                <!-- <div class="item active"> 
                     <img class="animated fadeInDown" src="images/slider/slider2.jpg" height="314" alt="...">
                     <div class="carousel-caption">
                         <h1 class="hs_slider_title animated bounceInDown">
@@ -143,7 +169,7 @@
                         <p class="lead animated pulse">W O H - WONDERS OF HOMOEOPATHY.</p>
 
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -155,10 +181,17 @@
                 <div class="hs_blog_categorie_detail">
 
                     <hr>
-                    <a href="">
-                        <h4> I have pursued my B.H.M.S. from J.S.P.S.HOMOEOCOLLEGE, HYD, A.P, INDIA. I finished my house surgency in 1995 July..</h4>
-                    </a>
-                    <p>I started my practice on 4th Dec 1995. It has been 19 years of classical homoeopathic practice dealing with all the types of diseases mentioned in the medical book including the rare diseases and have been successful in my endeavours. To quote a few examples,  Hepatitis-B, Sarcodoisis, ITPs, ILD, all kinds of hormone disturbances including Hypo & Hyper thyroidal problems, all types of arthritis-Rheumatic, Rheumatoid, Osteo, Mentally retarded cases, Congenital anomalies, Prenatal problems, Infertility in both sexes, Vitiligo, Psoriasis, Diabetis mellitus, Hypertension, Mental & Psychological diseases, Cardiovascular and last but not least Cancers. One of my significant achievement has been to give permanent cure to Asthma, Convulsions in a very short period..</p>
+                    <div class="col-xs-12 col-sm-3 text-center">
+                        <a href=""><img style="width: 100%;height: auto;border-radius: 5%;" src="images/team/drrenuka.jpg" alt=""></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                            <a href="">
+                                    <h4> I have pursued my B.H.M.S. from J.S.P.S.HOMOEOCOLLEGE, HYD, A.P, INDIA. I finished my house surgency in 1995 July..</h4>
+                                </a>
+                                <p>I started my practice on 4th Dec 1995. It has been 19 years of classical homoeopathic practice dealing with all the types of diseases mentioned in the medical book including the rare diseases and have been successful in my endeavours. To quote a few examples,  Hepatitis-B, Sarcodoisis, ITPs, ILD, all kinds of hormone disturbances including Hypo & Hyper thyroidal problems, all types of arthritis-Rheumatic, Rheumatoid, Osteo, Mentally retarded cases, Congenital anomalies, Prenatal problems, Infertility in both sexes, Vitiligo, Psoriasis, Diabetis mellitus, Hypertension, Mental & Psychological diseases, Cardiovascular and last but not least Cancers. One of my significant achievement has been to give permanent cure to Asthma, Convulsions in a very short period..</p>
+                    </div>
+                   <br/>
+                   
 
                     <a href=""><h5 style="padding:0 15px;">I pursued my M.D. from S. K. H. Medical college, Beed, Maharastra in Org & Phil.</h5></a>
                     <p>My Medication has been able to cure acute diseases such as chikun gunya, dengue breaking the myth - "Homoeopathy is slow acting, not suitable for acute diseases" in a short span of time. My treatment has proved to be effective for diseases like disc prolapses, neurogenic bladder where it was thought that the solution does not exist. I provided a very effective cure for congenital hearing losses which was appreciated by ENT surgeons. 
@@ -326,7 +359,7 @@
                                 <div class="hs_footer_about_us">
                                     <div class="col-lg-3 col-md-4 col-sm-12 col-md-12 col-sm-12">
                                         <h4 class="hs_heading">About Us</h4>
-                                        <a href="index.html"><img src="images/logo4.png" alt="logo" width="180" height="41" /></a> </div>
+                                        <a href="index.html"><img src="images/logo_1.svg" alt="logo" width="180" height="41" /></a> </div>
                                     <div class="col-lg-9 col-md-8 col-sm-12 hs_about_us">
                                         <div class="hs_margin_60"></div>
                                         <p>The Physician's High & only mission is to restore the sick to health, to cure as it is termed"

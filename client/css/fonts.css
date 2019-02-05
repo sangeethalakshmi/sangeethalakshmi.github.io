@@ -22,15 +22,7 @@ Copyright (c) 2016 Members area
 	url(../fonts/OpenSans/OpenSans-Regular.woff) format('woff'),
 	url(../fonts/OpenSans/OpenSans-Regular.ttf) format('truetype');
 }
-@font-face {
-	font-family: 'Open Sans';
-	font-style: normal;
-	font-weight: 600;
-	src: local('Open Sans Semibold'), local('OpenSans-Semibold'), 
-	url(../fonts/OpenSans/OpenSans-Semibold.woff2) format('woff2'),
-	url(../fonts/OpenSans/OpenSans-Semibold.woff) format('woff'),
-	url(../fonts/OpenSans/OpenSans-Semibold.ttf) format('truetype');
-}
+
 @font-face {
 	font-family: 'Open Sans';
 	font-style: normal;

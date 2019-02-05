@@ -12,6 +12,7 @@ function appendSlotDurationSelectbox(name){
     return select;
 };
 function getSettingsList() {
+    $('#defaultsettingsform').html("");
     $.ajax({
         type: "get",
         url: site_url + 'Appointment_default_settings/index',
@@ -32,7 +33,7 @@ function getSettingsList() {
                     "slots": []
                 });
                 dayssettings.push({
-                    "day": "Wedensday",
+                    "day": "Wednesday",
                     "slots": []
                 });
                 dayssettings.push({
@@ -93,13 +94,16 @@ function getSettingsList() {
                 if (dayssettings && dayssettings.length>0) {
                   dayssettings.forEach(function  (daysset,index) {
                     if (daysset && daysset.day) {
-                      $('#defaultsettingsform').append('<div class="row hs_margin_30 '+daysset.day+'"></div>');
+                      $('#defaultsettingsform').append('<div class="col-sm-12 hs_margin_30 '+daysset.day+'"></div>');
                         if (daysset && daysset.slots && daysset.slots.length>0) {
                             daysset.slots.forEach(function  (slot,index) {
                                 if (index == 0) {
-                                    $('.'+daysset.day).append('<div class="col-sm-12"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time">'+daysset.day+'</label><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_start_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_end_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_slot_duration_'+index+'"></div></div>')
+                                    $('.'+daysset.day).append('<div class="form-group"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time">'+daysset.day+'</label><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_start_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_end_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_slot_duration_'+index+'"></div></div>')
+                                    if (daysset.slots.length<4) {
+                                        $('.'+daysset.day).append('<a class="adddayslotsbutton" onclick="addDefaultSettings(\'' + daysset.day + '\')"><i class="fa fa-plus-circle"></i></a>');
+                                    };
                                 }else{
-                                     $('.'+daysset.day).append('<div class="col-sm-12"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time"></label><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_start_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_end_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_slot_duration_'+index+'"></div><a onclick="removeDefaultSettings(\'' + daysset.day + '\','+index+')"><i class="fa  fa-times-circle"></i></a></div>')
+                                     $('.'+daysset.day).append('<div class="form-group"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time"></label><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_start_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_end_slot_'+index+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_slot_duration_'+index+'"></div><a class="removedayslotsbutton" onclick="removeDefaultSettings(\'' + daysset.day + '\','+index+')"><i class="fa  fa-times-circle"></i></a></div>')
 
                                 };
                                 if (slot) {
@@ -118,15 +122,13 @@ function getSettingsList() {
                                 };
                             });
                         }else{
-                            $('.'+daysset.day).append('<div class="col-sm-12"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time">'+daysset.day+'</label><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_start_slot_0"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_end_slot_0"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_slot_duration_0"></div></div>');
+                            $('.'+daysset.day).append('<div class="form-group"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time">'+daysset.day+'</label><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_start_slot_0"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_end_slot_0"></div><div class="col-lg-3 col-md-3 col-sm-12 '+daysset.day+'_slot_duration_0"></div></div>');
                             $('.'+daysset.day+'_start_slot_0').append(appendSlotTimesSelectbox(daysset.day+'_start_slot_0'));
                             $('.'+daysset.day+'_end_slot_0').append(appendSlotTimesSelectbox(daysset.day+'_end_slot_0'));
                             $('.'+daysset.day+'_slot_duration_0').append(appendSlotDurationSelectbox(daysset.day+'_slot_duration_0'));
                         };
                     };
-                    if (daysset.slots.length<4) {
-                        $('.'+daysset.day).append('<a onclick="addDefaultSettings(\'' + daysset.day + '\')"><i class="fa fa-plus-circle"></i></a>');
-                    };
+                    
                   });
                 };
                 //general settings form
@@ -154,7 +156,7 @@ function getSettingsList() {
 function addDefaultSettings (classname){
     if(classname && $('.'+classname+' select') && $('.'+classname+' select').length>0){
         var indexcount = $('.'+classname+' select').length/3;
-        $('.'+classname).append('<div class="col-sm-12"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time"></label><div class="col-lg-3 col-md-3 col-sm-12 '+classname+'_start_slot_'+indexcount+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+classname+'_end_slot_'+indexcount+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+classname+'_slot_duration_'+indexcount+'"></div></div>');
+        $('.'+classname).append('<div class="form-group"><label class="control-label col-lg-3 col-md-3 col-sm-12" for="appointment_time"></label><div class="col-lg-3 col-md-3 col-sm-12 '+classname+'_start_slot_'+indexcount+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+classname+'_end_slot_'+indexcount+'"></div><div class="col-lg-3 col-md-3 col-sm-12 '+classname+'_slot_duration_'+indexcount+'"></div></div>');
          $('.'+classname+'_start_slot_'+indexcount).append(appendSlotTimesSelectbox(classname+'_start_slot_'+indexcount));
         $('.'+classname+'_end_slot_'+indexcount).append(appendSlotTimesSelectbox(classname+'_end_slot_'+indexcount));
         $('.'+classname+'_slot_duration_'+indexcount).append(appendSlotDurationSelectbox(classname+'_slot_duration_'+indexcount));
@@ -212,7 +214,7 @@ function UpdateDefaultSettings () {
     var default_settings1 = [{"day":"Sunday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
         {"day":"Monday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
         {"day":"Tuesday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
-        {"day":"Wedensday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
+        {"day":"Wednesday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
         {"day":"Thursday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
         {"day":"Friday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""},
         {"day":"Saturday","end_1":"","end_2":"","end_3":"","end_4":"","end_5":"","start_1":"","start_1_duration":"","start_2":"","start_2_duration":"","start_3":"","start_3_duration":"","start_4":"","start_4_duration":"","start_5":"","start_5_duration":""}];
