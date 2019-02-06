@@ -2960,3 +2960,6 @@ b, strong {
     top:0px
 }
 .hlc_topheader p {color:white; margin: 0 0 2px;}
+.jqx-widget-bootstrap, .jqx-widget-header-bootstrap, .jqx-fill-state-normal-bootstrap, .jqx-widget-content-bootstrap, .jqx-fill-state-hover-bootstrap, .jqx-fill-state-pressed-bootstrap {
+    font-weight: normal !important;
+}

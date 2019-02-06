@@ -73,16 +73,18 @@ function getAddUserForm(){
   $('#status').val("");
   $('#active').val("");
 }
-function deleteUserConfirmDetails(id,data) {
+function deleteUserConfirmDetails(id) {
   if (confirm('Are you sure want to delete?')) {
+    data = userslist[id];
     var obj = {
       'full_name': data.full_name,
-      'email_address': data.email_address,
+      'email_address': data.email,
       'phone_number':data.phone_number,
       'id':data.id,
       'role': data.role,
       'status': data.status,
-      'active':0
+      'active':0,
+      'deleted':1
     };
     updateUser('delete',obj);
   }
@@ -148,14 +150,6 @@ function renderUsersGrid(){
       type:"number"}],
     cache: false,
     url: site_url + 'Admin/getEmployees',
-    filter: function () {
-      // update the grid and send a request to the server.
-      $("#usersjqxgrid").jqxGrid('updatebounddata', 'filter');
-    },
-    sort: function () {
-      // update the grid and send a request to the server.
-      $("#usersjqxgrid").jqxGrid('updatebounddata', 'sort');
-    },
     beforeprocessing: function (data) {
       if (data != null && data.length > 0) {
         source.totalrecords = data[0].totalRecords;
@@ -168,83 +162,100 @@ function renderUsersGrid(){
     loadError: function (xhr, status, error) { }    
 });
  
-  // initialize jqxGrid
-  $("#usersjqxgrid").jqxGrid({
+  // initialize jqxDataTable
+  $("#usersjqxDataTable").jqxDataTable({
     width: '100%',
-    source: dataadapter,
-    filterable: true,
-    sortable: true,
-    autoheight: true,
     pageable: true,
-    pagesize: 10,
-    //pagesizeoptions: ['5', '10', '15'],
-    virtualmode: true,
-     theme: 'bootstrap',
-    rendergridrows: function (obj) {
-      return obj.data;
-    },
-    columns: [{
-        text: 'Name',
-        datafield: 'full_name',
-        width:'18%'
-      }, {
+    pagerButtonsCount: 10,
+    pageSize: 3,
+    serverProcessing: true,
+    source: dataadapter,
+    altRows: true,
+    filterable: true,
+    filterMode: 'simple',
+    theme: 'energyblue',
+    showHeader: false,
+    columnsResize: true,
+    columns: [
+       {
         text: 'Phone',
         datafield: 'phone_number',
+        filterable: true,
+        hidden:true,
         width:'10%'
       }, {
         text: 'Email',
         datafield: 'email',
-        width:'28%'
+        filterable: true,
+        width:'28%',
+        hidden:true
       }, {
         text: 'Role',
-        datafield: 'role',width:'7%'
+        filterable: false,
+        datafield: 'role',width:'7%',
+        hidden:true
       },
       {
         text: 'Status',
-        datafield: 'status',width:'10%'
+        filterable: false,
+        datafield: 'status',width:'10%',
+        hidden:true
       },
       {
         text: 'Created',
+        filterable: false,
         datafield: 'created_at',
         cellsformat: 'yyyy-MM-dd',
         align: 'right',
         cellsalign: 'right',
-        width:'15%'
+        width:'15%',
+        hidden:true
       },
       {
         text: 'Id',
+        filterable: false,
         datafield: 'id',hidden:true
-      }, {
-            text: 'Edit',
-            datafield: 'edit',
-            columntype: 'image',
-             width:'6%',
-            cellsrenderer: function () {
-              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="fa fa-pencil"></i></a></div>';
+      }, 
+          {
+            filterable: false,
+            text: 'Details', align: 'center', dataField: 'full_name',
+            cellsRenderer: function (row, column, value, rowData) {
+                var container = '<div class="col-xs-12 nopadding">'
+                var leftcolumn = '<div class="col-xs-12 text-center nopadding col-sm-1">';
+                var rightcolumn = '<div class="col-xs-12 text-left col-sm-7">';
+                var lastcolumn = '<div class="col-xs-12 text-left col-sm-4">';
+                var image =  '<div style="margin: 10px;"><img width="60" height="60" style="display: block;" src="images/testimonial/avatar.jpeg"/></div>';
+                var full_name = "<div style='margin: 10px;'><b>Name:</b>" + rowData.full_name + "</div>";
+                var Email = "<div style='margin: 10px;'><b>Email:</b> " + rowData.email + "</div>";
+                var createdat = "<div style='margin: 10px;'><b>Created at:</b> " + moment(rowData.created_at).format('ddd, MMM D') + "</div>";
+                var editbutton = '<div class="text-left gridicons" style="margin: 10px;"><b>Edit:    </b><a  href="javascript:void(0)" onClick="getEmployeedeatils('+rowData.id+');"><i class="fa fa-pencil"></i></a></div>';
+                var status = "<div style='margin: 10px;'> " + rowData.status + "</div>";
+
+                leftcolumn +=image;
+                leftcolumn += status;
+                leftcolumn += "</div>";
+                
+                var phone = "<div style='margin: 10px;'><b>Phone:</b> " + rowData.phone_number + "</div>";
+                var Role = "<div style='margin: 10px;'><b>Role:</b> " + rowData.role + "</div>";
+                var deletebutton = '<div class="text-left gridicons" style="margin: 10px;"><b>Delete:   </b><a href="javascript:void(0)" onClick="deleteUserConfirmDetails('+row+');"><i class="glyphicon glyphicon-trash"></i></a></div>';
+                
+                rightcolumn += full_name;
+                rightcolumn += Email;
+                rightcolumn += createdat;
+                rightcolumn += phone;
+                rightcolumn += "</div>";
+                lastcolumn += Role;
+                lastcolumn += editbutton;
+                lastcolumn += deletebutton;
+                lastcolumn += "</div>";
+                container += leftcolumn;
+                container += rightcolumn;
+                container += lastcolumn;
+                container += "</div>";
+                return container;
             }
-          },{
-            text: 'Delete',
-            datafield: 'delete',
-            columntype: 'image',
-             width:'6%',
-            cellsrenderer: function () {
-              return '<div class="text-center gridicons"><a href="javascript:void(0)"><i class="glyphicon glyphicon-trash"></i></a></div>';
-            }
-          }
-      
-    ],
-    ready: function () {
-      $('#usersjqxgrid').on('cellclick', function (event) {
-        var data = $('#usersjqxgrid').jqxGrid('getrowdata', event.args.rowindex);
-        if (event.args.datafield === 'delete' && (event.args.rowindex || event.args.rowindex === 0)) {
-          if (data.id)
-            deleteUserConfirmDetails(data.id,data);
-        }else if (event.args.datafield === 'edit' && (event.args.rowindex || event.args.rowindex === 0)) {
-          if (data.id)
-            getEmployeedeatils(data.id);
-        };
-      });
-    }
+        }
+    ]
   });
 }
 $(document).ready(function () {
