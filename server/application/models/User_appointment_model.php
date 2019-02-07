@@ -79,7 +79,24 @@ class User_appointment_model extends CI_Model
 
         // get total rows
     function total_rows($where = NULL,$usertype=NULL,$userId) {
-        $query = "SELECT * FROM " .$this->table .' app '. $where;
+        //$query = "SELECT * FROM " .$this->table .' app '. $where;
+        if (isset($usertype) && isset($userId)) {
+            if ( $usertype != 'Super Admin' ) {
+               $query = "SELECT app.*,DATEDIFF(app.appointment_time, now()) AS days,full_name,email_address as email,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId;
+
+            }else{
+
+                $query = 'select * from (select app.*,a.email,a.full_name,a.phone_number from '.$this->table .' as app  LEFT JOIN 
+                 admin as a ON (app.user_id = a.id and app.created_by != "User")
+                 UNION
+                select app.*,a.email_address,a.full_name,a.phone_number from '.$this->table .' as app LEFT JOIN 
+                user_profile as a  ON (app.user_id = a.id and app.created_by = "User")) as app'.
+                 $where.' and app.email is not null';
+            }
+
+        }else{
+            $query = "SELECT * FROM " .$this->table .' '. $where;
+        }
         if ( $usertype != 'Super Admin' ) {
             $query = $query.' and user_id =  '.$userId;
         }

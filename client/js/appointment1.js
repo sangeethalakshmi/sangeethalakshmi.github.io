@@ -16,7 +16,7 @@ function createorUpdateAppointment(from,obj,details){
     functionname = 'update/'+$('#appointment_id').val();
   }
     var appointment_details = $('#appointmentform').serialize();
-    var appointment_date = $("#appointment_date").val();
+    var appointment_date = $("input[name=appointment_date]:checked").val();
     var appointment_time = $("input[name=appointment_time]:checked").val();
     if(from && from == "delete"){
       appointment_details = details;
@@ -146,10 +146,7 @@ function getappointmentsettings(date){
           });
           $('.appointmenttimebtngroup').html("");
           if (slots && slots.length>0) {
-            $.each(slots, function(key, value) {   
-              // $('#appointment_time').append($("<option></option>")
-              //               .attr("value",value)
-              //               .text(value)); 
+            $.each(slots, function(key, value) { 
               $('.appointmenttimebtngroup').append('<label class="btn btn-default"><input type="radio" id="_'+value+'" name="appointment_time" value="'+value+'" />'+value+'</label>')
             });
           };
@@ -189,9 +186,12 @@ function deleteAppointmentConfirmDetails(id,data,type) {
 }
 
 function getAppointmentdeatils(id){
+  $('.appointmentdatebtngroup').html("");
+  $('input[type=radio][name=appointment_date]').remove();
   $('.listscreen').hide();
   $('.addscreen').show();
   $('input[name=appointment_time]').attr('checked',false);
+  $('input[name=appointment_date]').attr('checked',false);
   $('#appointment_date').val("");
   $('#appointment_id').val("");
   $('#status1').val("");
@@ -200,35 +200,84 @@ function getAppointmentdeatils(id){
   $('#appointment_error').hide();
   $('#appointment_success').html('');
   $('#appointment_success').hide();
+  var dayaftertomorrow = moment();
+  var startDate = moment();
+  var endDate = moment().add(9, 'days');
   $.ajax({
       type: "get",
       url: site_url + 'User_appointment/read/'+id,
       success: function (result) {
-        var data = $.parseJSON(result);
-        if (data.success) {
+        var data1 = $.parseJSON(result);
+        var disableday = 6;
+        var weekdaynumbers = {"Sunday" : 0,"Monday" : 1,"Tuesday" : 2,"Wednesday" : 3,"Thursday" : 4,"Friday" : 5,"Saturday" : 6}
+       if (data1.success) {
           console.log("correct login");
           $('.modal').modal('hide');
-          if (data.appointment) {
-            $('#appointment_date').val(data.appointment.date);
-            $('#description').val(data.appointment.description);
-            $('#_'+data.appointment.time).attr('checked',true);
-            $('#appointment_id').val(data.appointment.id);
-            $('#active').val(data.appointment.active);
-            if (localStorage.getItem('usertype') && localStorage.getItem('usertype') != 'User') {
-              $('.showhiddenstatus').hide();
-              $('.hidehiddenstatus').show();
-            }else{
-              $('.showhiddenstatus').show();
-              $('.hidehiddenstatus').hide();
-            };
-            $('#status1').val(data.appointment.status);
-            getappointmentsettings(data.appointment.date);
-            setTimeout(function  () {
-                $('.appointmenttimebtngroup').append('<label class="btn btn-default active"><input type="radio" id="_'+data.appointment.time+'" name="appointment_time" value="'+data.appointment.time+'" />'+data.appointment.time+'</label>')
-                $('#_'+data.appointment.time).attr('checked',true);
-            },500);
-           
-
+          if (data1.appointment) {
+            $.ajax({
+              type: "get",
+              url: site_url + 'User_appointment/getGeneralAppointmetSettings',
+              success: function (result) {
+                var data = $.parseJSON(result);
+                if (data.success) {
+                  if (data.generalSettings) {
+                    var statrtdays = 0;
+                    var enddays = 0;
+                    if (data.generalSettings.show_appointments_before_days) {
+                        statrtdays = parseInt(data.generalSettings.show_appointments_before_days);
+                        if (statrtdays) {
+                          dayaftertomorrow = moment(data1.appointment.date)
+                        };
+                        startDate = dayaftertomorrow;
+                    };
+                    if (data.generalSettings.show_appointment_upto) {
+                        enddays = parseInt(data.generalSettings.show_appointment_upto);
+                        if (enddays) {
+                          endDate = moment(data1.appointment.date).add(enddays, 'days');
+                        }else{
+                          endDate = moment(data1.appointment.date).add(data.generalSettings.show_appointment_upto, 'days');
+                        };
+                    };
+                    if (data.generalSettings.leave_on) {
+                        disableday = weekdaynumbers[data.generalSettings.leave_on];
+                    };
+                    
+                  };
+                }
+                var availdates = enumerateDaysBetweenDates(startDate, endDate);
+                if (availdates && availdates.length>0) {
+                  $.each(availdates, function(availdate, availvalue) { 
+                    $('.appointmentdatebtngroup').append('<label class="btn btn-default"><input type="radio" id="_'+availvalue.YYYYMMDD+'" name="appointment_date" value="'+availvalue.YYYYMMDD+'" />'+availvalue.dddmmmdo+'</label>')
+                  });
+                };
+                getappointmentsettings(data1.appointment.date);
+                if (localStorage.getItem('usertype') && localStorage.getItem('usertype') != 'User') {
+                  $('.showhiddenstatus').hide();
+                  $('.hidehiddenstatus').show();
+                }else{
+                  $('.showhiddenstatus').show();
+                  $('.hidehiddenstatus').hide();
+                };
+                $('#status1').val(data1.appointment.status);
+                
+                setTimeout(function  () {
+                 
+                  $('#_'+data1.appointment.date).attr('checked',true);
+                  $('#_'+data1.appointment.date).parent().addClass('active');
+                  $("#appointmentdatebtngroup :input").change(function() {
+                    if (this && this.value) {
+                      //var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
+                      getappointmentsettings(this.value)
+                    };
+                  });
+                    $('.appointmenttimebtngroup').append('<label class="btn btn-default active"><input type="radio" id="_'+data1.appointment.time+'" name="appointment_time" value="'+data1.appointment.time+'" />'+data1.appointment.time+'</label>')
+                    $('#_'+data1.appointment.time).attr('checked',true);
+                    $('#description').val(data1.appointment.description);
+                    $('#appointment_id').val(data1.appointment.id);
+                $('#active').val(data1.appointment.active);
+                },500);
+                }
+            });
           } 
         } 
       }
@@ -386,6 +435,77 @@ function renderAppointmentsGrid(){
 
 }
 
+var enumerateDaysBetweenDates = function(startDate, endDate) {
+  var now = startDate, dates = [];
+ while (now.isSameOrBefore(endDate)) {
+        dates.push({'YYYYMMDD':now.format('YYYY-MM-DD'),"dddmmmdo":now.format('ddd, MMM D')});
+        now.add(1, 'days');
+    }
+  return dates;
+};
+function getDateRangesForGivenDates(){
+  var dayaftertomorrow = moment().add(2, 'days');
+  var date = dayaftertomorrow.format('YYYY-MM-DD');
+  var startDate = moment().add(2, 'days');
+  var endDate = moment().add(9, 'days');
+  
+  var disableday = 6;
+  var weekdaynumbers = {"Sunday" : 0,"Monday" : 1,"Tuesday" : 2,"Wednesday" : 3,"Thursday" : 4,"Friday" : 5,"Saturday" : 6}
+
+  $.ajax({
+    type: "get",
+    url: site_url + 'User_appointment/getGeneralAppointmetSettings',
+    success: function (result) {
+      var data = $.parseJSON(result);
+      if (data.success) {
+        if (data.generalSettings) {
+          var statrtdays = 0;
+          var enddays = 0;
+          if (data.generalSettings.show_appointments_before_days) {
+              statrtdays = parseInt(data.generalSettings.show_appointments_before_days);
+              if (statrtdays) {
+                dayaftertomorrow = moment().add(statrtdays, 'days')
+                date = dayaftertomorrow.format('YYYY-MM-DD');
+              };
+              startDate = dayaftertomorrow;
+          };
+          if (data.generalSettings.show_appointment_upto) {
+              enddays = parseInt(data.generalSettings.show_appointment_upto);
+              if (enddays && statrtdays) {
+                var daysapply = enddays+statrtdays;
+                endDate = moment().add(daysapply, 'days');
+              }else{
+                endDate = moment().add(data.generalSettings.show_appointment_upto, 'days');
+              };
+          };
+          if (data.generalSettings.leave_on) {
+              disableday = weekdaynumbers[data.generalSettings.leave_on];
+          };
+          
+        };
+      }
+      var availdates = enumerateDaysBetweenDates(startDate, endDate);
+      if (availdates && availdates.length>0) {
+        $.each(availdates, function(availdate, availvalue) { 
+          $('.appointmentdatebtngroup').append('<label class="btn btn-default"><input type="radio" id="_'+availvalue.YYYYMMDD+'" name="appointment_date" value="'+availvalue.YYYYMMDD+'" />'+availvalue.dddmmmdo+'</label>')
+        });
+      };
+      getappointmentsettings(date);
+      setTimeout(function  () {
+        $('.showhiddenstatus').show();
+        $('.hidehiddenstatus').hide();
+        $('#_'+date).attr('checked',true);
+        $('#_'+date).parent().addClass('active');
+        $("#appointmentdatebtngroup :input").change(function() {
+          if (this && this.value) {
+            //var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
+            getappointmentsettings(this.value)
+          };
+        });
+      },1000);
+    }
+});
+}
 function loadAddAppointmentform(from){
   $('#appointment_success').html('');
   $('#appointment_success').hide();
@@ -403,74 +523,8 @@ function loadAddAppointmentform(from){
   }else{
     $('.listscreen').hide();
       $('.addscreen').show();
-      var dayaftertomorrow = new Date();
-      dayaftertomorrow.setDate(dayaftertomorrow.getDate()+3);
-      var date = dayaftertomorrow.getFullYear() + '-' + (dayaftertomorrow.getMonth() + 1) + '-' + dayaftertomorrow.getDate();
-      var startDate = "+3d";
-      var endDate = "+10d";
-      var disableday = 6;
-      var weekdaynumbers = {"Sunday" : 0,"Monday" : 1,"Tuesday" : 2,"Wednesday" : 3,"Thursday" : 4,"Friday" : 5,"Saturday" : 6}
-      $.ajax({
-          type: "get",
-          url: site_url + 'User_appointment/getGeneralAppointmetSettings',
-          success: function (result) {
-            var data = $.parseJSON(result);
-            if (data.success) {
-              if (data.generalSettings) {
-                var statrtdays = 0;
-                var enddays = 0;
-                if (data.generalSettings.show_appointments_before_days) {
-                    statrtdays = parseInt(data.generalSettings.show_appointments_before_days);
-                    if (statrtdays) {
-                      dayaftertomorrow = new Date()
-                      dayaftertomorrow.setDate(dayaftertomorrow.getDate()+statrtdays);
-                      date = dayaftertomorrow.getFullYear() + '-' + (dayaftertomorrow.getMonth() + 1) + '-' + dayaftertomorrow.getDate();
-                    };
-                    startDate = '+'+data.generalSettings.show_appointments_before_days+'d';
-                };
-                if (data.generalSettings.show_appointment_upto) {
-                    enddays = parseInt(data.generalSettings.show_appointment_upto);
-                    if (enddays && statrtdays) {
-                      var daysapply = enddays+statrtdays;
-                      endDate = '+'+daysapply+'d';
-                    }else{
-                      endDate = '+'+data.generalSettings.show_appointment_upto+'d';
-                    };
-                };
-                if (data.generalSettings.leave_on) {
-                    disableday = weekdaynumbers[data.generalSettings.leave_on];
-                };
-                
-              };
-              getappointmentsettings(date);
-            }
-            $('#appointment_date').datepicker({
-                format: "yyyy-mm-dd",
-                startDate:startDate,
-                endDate:endDate,
-                 autoclose: true,
-                 beforeShowDay: function(day) {
-                    var day = day.getDay();
-                    if (day == disableday) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                 }
-            }).on('changeDate', function(e) {
-              if (e && e.date) {
-                var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
-                getappointmentsettings(date1)
-              };
-            });
-            $("#appointment_date").datepicker("setDate", dayaftertomorrow);
-            setTimeout(function  () {
-              $('.showhiddenstatus').show();
-              $('.hidehiddenstatus').hide();
-            },1000);
-          }
-      });
-      
+     
+      getDateRangesForGivenDates();
   };
   
 };
@@ -536,6 +590,8 @@ $(document).ready(function () {
     
     
   }
+  
+  
   $('.appointmentitem').on('click', function(event){
     var $this = $(this);
     $('.appointmentitem').removeAttr('style').removeClass('clicked');
@@ -545,6 +601,7 @@ $(document).ready(function () {
       $this.css('background','#7fc242').addClass('clicked');
     }
   });
-  
 
 });
+
+

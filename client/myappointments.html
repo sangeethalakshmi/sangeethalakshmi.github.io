@@ -19,8 +19,8 @@
         <link rel="stylesheet" href="css/main.css" media="screen"/>
         <link rel="stylesheet"  type="text/css" href="css/color/color.css"/>
         <link rel="stylesheet" href="css/jqwidgets/styles/jqx.base.css" type="text/css" />
-        <link rel="stylesheet" href="js/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
-         <link rel="stylesheet" href="css/bootstrap-datepicker/bootstrap-datepicker.css" type="text/css" />
+        <!-- <link rel="stylesheet" href="js/jqwidgets/styles/jqx.bootstrap.css" type="text/css" /> -->
+        <link rel="stylesheet" href="css/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
         <!-- <script type="text/javascript">
         //   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         //   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -40,7 +40,34 @@
             <div id="status"><img src="images/loader.gif" id="preloader_image" width="36" height="36" alt="loading image"/></div>
         </div>
         <!--pre loader end--> 
+        <div class="hlc_topheader">
+                <div class="container">
+                    <div class="row hidden-sm hidden-xs">
+                        <div class="col-lg-4 col-md-6 col-sm-12 nopadding">
+                            <div class="col-md-2 hs_logo" id=""> <a href="index.html"> <img class="profileimage" src="images/samuel.jpg" alt=""> </a> </div>
+                            <div class="col-md-10  name_hs_logo" id=""> <p>Samuel Hahnemann</p><p>Classical Homoeopathy</p> </div>
+                            <!-- #logo --> 
+                        </div>
+                        <div class="col-lg-4 visible-lg text-center nopadding"> </div>
+                        <div class="col-lg-4 col-md-6 col-sm-2 text-right nopadding">
+                            <div class="col-md-10 nopadding name_hs_logo" id=""> <p>Dr. Katta Renuka </p><p>B.H.M.S., M.D., F.R.H.S.,</p> </div>
+                            <div class="col-md-2 hs_logo"> <a href="index.html"> <img class="profileimage" src="images/portfolio/drrenuka.jpg" alt=""> </a> </div>
 
+                        </div>
+                    </div>
+                    <div class="row visible-sm visible-xs">
+                        <div class="col-xs-6 nopadding">
+                            <div class="col-xs-12 hs_logo" id=""> <a href="index.html"> <img class="profileimage" src="images/samuel.jpg" alt=""> </a> </div>
+                            <!-- #logo --> 
+                        </div>
+
+                        <div class="col-xs-6 text-right nopadding">
+                            <div class="col-xs-12 hs_logo"> <a href="index.html"> <img class="profileimage" src="images/portfolio/drrenuka.jpg" alt=""> </a> </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
        <!--header start-->
         <header id="hs_header">
             <div class="container">
@@ -137,7 +164,7 @@
                         <a  style="margin-top:30px;" onclick="getAddAppointmentForm()" class="nopadding col-sm-1 text-right">Add <i class="fa fa-plus-square-o"></i></a>
                     </div>
                     
-                    <div id="appointmentsjqxgrid"></div>
+                    <div id="appointmentsDataTable"></div>
                 </div>
             </div>
             <div class="row addscreen margin_40_top">
@@ -350,17 +377,11 @@
         <script type="text/javascript" src="js/single-0.1.0.js"></script>
         <script type="text/javascript" src="js/jqwidgets/jqxcore.js"></script>
         <script type="text/javascript" src="js/jqwidgets/jqxbuttons.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxscrollbar.js"></script>
+        <script type="text/javascript" src="js/jqwidgets/jqxdata.js"></script> 
         <script type="text/javascript" src="js/jqwidgets/jqxlistbox.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxmenu.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.selection.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.filter.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.sort.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxdata.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxgrid.pager.js"></script>
-        <script type="text/javascript" src="js/jqwidgets/jqxdropdownlist.js"></script>  
-        <script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+        <script type="text/javascript" src="js/jqwidgets/jqxdropdownlist.js"></script> 
+        <script type="text/javascript" src="js/jqwidgets/jqxscrollbar.js"></script>
+        <script type="text/javascript" src="js/jqwidgets/jqxdatatable.js"></script> 
         <script type="text/javascript" src="js/custom.js"></script> 
          <script type="text/javascript" src="js/appointment.js"></script>
        <script type="text/javascript" src="js/functionality.js"></script> 
