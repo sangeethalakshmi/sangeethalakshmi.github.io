@@ -2830,7 +2830,8 @@ div[data-target] > div {
     font-weight: 500;
 }
 #hs_header #hs_logo {
-    margin: 10px 0;
+	margin: 10px 0;
+	position: absolute;
 }
 .carousel-inner > .item {
 	height: 40vh;
@@ -2962,4 +2963,11 @@ b, strong {
 .hlc_topheader p {color:white; margin: 0 0 2px;}
 .jqx-widget-bootstrap, .jqx-widget-header-bootstrap, .jqx-fill-state-normal-bootstrap, .jqx-widget-content-bootstrap, .jqx-fill-state-hover-bootstrap, .jqx-fill-state-pressed-bootstrap {
     font-weight: normal !important;
+}
+.hs_nav_toggle {
+	background: #ffffff !important;
+	color: #3845b5;
+}
+@media only screen and (max-width: 768px) {
+	.container.margin_60_top{margin-top: 0px;}
 }
