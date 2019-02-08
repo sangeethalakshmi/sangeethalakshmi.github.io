@@ -46,12 +46,20 @@ class User_profile extends CI_Controller
     public function getUsers()
     {
         $where = " WHERE active = 1 ";
-        $filterscount = $this->input->get('filterscount');
-        if (isset($filterscount)  && $filterscount> 0) {
-             $where =  $where."and (";
+        $filterslength = $this->input->get('filterslength');
+        $filteredarray = array(
+            '0' => 'delete', 
+            '1' => 'edit', 
+            '2' => 'id', 
+            '3' => 'created_at', 
+            '4' => 'status', 
+            '5' => 'password', 
+        );
+        if (isset($filterslength)  && $filterslength> 0) {
+             $where =  $where."and ((";
             $tmpdatafield = "";
             $tmpfilteroperator = "";
-            for ($i=0; $i < $filterscount; $i++)
+            for ($i=0; $i < $filterslength; $i++)
             {
                 // get the filter's value.
                 $filtervalue =  $this->input->get("filtervalue" . $i);
@@ -61,62 +69,63 @@ class User_profile extends CI_Controller
                 $filterdatafield = $this->input->get("filterdatafield" . $i);
                 // get the filter's operator.
                 $filteroperator = $this->input->get("filteroperator" . $i);
+                if ($filterdatafield && !in_array($filterdatafield, $filteredarray)) {
+                    if ($tmpdatafield == "")
+                    {
+                            $tmpdatafield = $filterdatafield;
+                    }
+                    else if ($tmpdatafield <> $filterdatafield)
+                    {
+                            $where .= ")OR(";
+                    }
+                    else if ($tmpdatafield == $filterdatafield)
+                    {
+                            if ($tmpfilteroperator == 0)
+                            {
+                                    $where .= " OR ";
+                            }
+                            else $where .= " OR ";
+                    }
 
-                if ($tmpdatafield == "")
-                {
-                        $tmpdatafield = $filterdatafield;
-                }
-                else if ($tmpdatafield <> $filterdatafield)
-                {
-                        $where .= ")AND(";
-                }
-                else if ($tmpdatafield == $filterdatafield)
-                {
-                        if ($tmpfilteroperator == 0)
-                        {
-                                $where .= " AND ";
-                        }
-                        else $where .= " OR ";
-                }
-
-                // build the "WHERE" clause depending on the filter's condition, value and datafield.
-                switch($filtercondition)
-                {
-                    case "CONTAINS":
-                            $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."%'";
-                            break;
-                    case "DOES_NOT_CONTAIN":
-                            $where .= " " . $filterdatafield . " NOT LIKE '%" . $filtervalue ."%'";
-                            break;
-                    case "EQUAL":
-                            $where .= " " . $filterdatafield . " = '" . $filtervalue ."'";
-                            break;
-                    case "NOT_EQUAL":
-                            $where .= " " . $filterdatafield . " <> '" . $filtervalue ."'";
-                            break;
-                    case "GREATER_THAN":
-                            $where .= " " . $filterdatafield . " > '" . $filtervalue ."'";
-                            break;
-                    case "LESS_THAN":
-                            $where .= " " . $filterdatafield . " < '" . $filtervalue ."'";
-                            break;
-                    case "GREATER_THAN_OR_EQUAL":
-                            $where .= " " . $filterdatafield . " >= '" . $filtervalue ."'";
-                            break;
-                    case "LESS_THAN_OR_EQUAL":
-                            $where .= " " . $filterdatafield . " <= '" . $filtervalue ."'";
-                            break;
-                    case "STARTS_WITH":
-                            $where .= " " . $filterdatafield . " LIKE '" . $filtervalue ."%'";
-                            break;
-                    case "ENDS_WITH":
-                            $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."'";
-                            break;
+                    // build the "WHERE" clause depending on the filter's condition, value and datafield.
+                    switch($filtercondition)
+                    {
+                        case "CONTAINS":
+                                $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."%'";
+                                break;
+                        case "DOES_NOT_CONTAIN":
+                                $where .= " " . $filterdatafield . " NOT LIKE '%" . $filtervalue ."%'";
+                                break;
+                        case "EQUAL":
+                                $where .= " " . $filterdatafield . " = '" . $filtervalue ."'";
+                                break;
+                        case "NOT_EQUAL":
+                                $where .= " " . $filterdatafield . " <> '" . $filtervalue ."'";
+                                break;
+                        case "GREATER_THAN":
+                                $where .= " " . $filterdatafield . " > '" . $filtervalue ."'";
+                                break;
+                        case "LESS_THAN":
+                                $where .= " " . $filterdatafield . " < '" . $filtervalue ."'";
+                                break;
+                        case "GREATER_THAN_OR_EQUAL":
+                                $where .= " " . $filterdatafield . " >= '" . $filtervalue ."'";
+                                break;
+                        case "LESS_THAN_OR_EQUAL":
+                                $where .= " " . $filterdatafield . " <= '" . $filtervalue ."'";
+                                break;
+                        case "STARTS_WITH":
+                                $where .= " " . $filterdatafield . " LIKE '" . $filtervalue ."%'";
+                                break;
+                        case "ENDS_WITH":
+                                $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."'";
+                                break;
+                    }
                 }
 
-                if ($i == $filterscount - 1)
+                if ($i == $filterslength - 1)
                 {
-                        $where .= ")";
+                        $where .= "))";
                 }
 
                 $tmpfilteroperator = $filteroperator;
