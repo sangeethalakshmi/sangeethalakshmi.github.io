@@ -95,6 +95,26 @@ class User_profile_model extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
     }
+    //checking for change password
+    public function checkpassword($arr)
+    {
+        $user_id=$this->session->userdata('user_id');
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->where('email_address',$arr['email_address']);
+        $query=$this->db->get();
+        $result=$query->result();
+       return $result;
+    }
+
+    //upadete user password functionality
+    function updateUserPassword($arr){
+        $layout_data = array();
+        $layout_data['password'] = $arr['password'];
+        $this->db->where('email_address',$arr['email_address']);
+        $this->db->update($this->table,$layout_data);
+        return true;
+    }
 
 }
 

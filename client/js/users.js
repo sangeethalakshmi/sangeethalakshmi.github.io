@@ -33,15 +33,15 @@ function updateUser(from,obj){
                 var data = $.parseJSON(result);
                 if (data.success) {
                   if(functionname =='create'){
-                    $('#user_success').html('Add user Successfully.');
+                    $('#user_success').html('User added successfully.');
                   }else{
-                    $('#user_success').html('Update User Successfully.');
+                    $('#user_success').html('User updated successfully.');
                   }
                   
                   $('#user_success').show();
                   setTimeout(function () {
                       $('#user_success').hide();
-                      if (window.location.pathname && window.location.pathname.indexOf("Registerform.html")>-1) {
+                      if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
                         window.location.href="index.html"
                       }else{;
                         renderUsersGrid();

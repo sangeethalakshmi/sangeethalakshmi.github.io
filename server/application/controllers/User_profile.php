@@ -259,7 +259,29 @@ class User_profile extends CI_Controller
             redirect(site_url('user_profile'));
         }
     }
-
+    public function changepassword() {
+        $arr = array();
+        $response = array();
+        $response['status']=false;
+        $response['success'] = '';
+        $arr['email_address'] = $this->input->post('email_address');
+        $arr['password'] = $this->input->post('new_password');
+        $result = $this->User_profile_model->checkpassword($arr);
+        if ($result) {
+            $res = $this->User_profile_model->updateUserPassword($arr);
+            if($res){
+                $response['status']=true;
+                $response['success'] = 'Update password Successfully.';
+            }
+            else{
+                $response['success'] = "Some error occur while updating";
+            }
+            echo json_encode($response);
+        } else {
+            $response['success'] = "Email doesn't exists";
+            echo json_encode($response); 
+        }
+    }
     public function _rules() 
     {
 	$this->form_validation->set_rules('full_name', 'full name', 'trim|required');
