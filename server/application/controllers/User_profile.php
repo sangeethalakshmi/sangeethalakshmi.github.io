@@ -200,31 +200,39 @@ class User_profile extends CI_Controller
     
     public function create() 
     {
-        
-        $data = array(
-            'full_name' => $this->input->post('full_name',TRUE),
-            'phone_number' => $this->input->post('phone_number',TRUE),
-            'email_address' => $this->input->post('email_address',TRUE),
-            'status' => 'ACTIVE',
-            'active' => 1,
-            'deleted' => 0
-        );
-        $data['password'] = substr($this->input->post('full_name'), 0, 3).'1234';
-        $result = $this->User_profile_model->insert($data);
-         if($result){
-            $response = array();
-            $response['status']=true;
-            $response['success'] = 'Add Config Successfully.';
-            echo json_encode($response);
+        $arr = array();
+        $response = array();
+        $response['status']=false;
+        $response['success'] = '';
+        $arr['email_address'] = $this->input->post('email_address');
+        $res = $this->User_profile_model->checkpassword($arr);
+        if($res){
+            $response['success'] = 'Already user exists with this email';
+        }else{
+            $data = array(
+                'full_name' => $this->input->post('full_name',TRUE),
+                'phone_number' => $this->input->post('phone_number',TRUE),
+                'email_address' => $this->input->post('email_address',TRUE),
+                'password' =>  $this->input->post('password',TRUE),
+                'status' => 'ACTIVE',
+                'active' => 1,
+                'deleted' => 0
+            );
+            $result = $this->User_profile_model->insert($data);
+             if($result){
+                $response['status']=true;
+                $response['success'] = 'Add User Successfully.';
+            }
+            else{
+                $response['success'] = 'Some error occur while adding user';
+            }
         }
-        else{
-            echo FALSE;
-        }
-        
+        echo json_encode($response);
     }
     public function update() 
-    {
-        
+    { 
+        $response = array();
+        $response['status']=false;
         $data = array(
             'full_name' => $this->input->post('full_name',TRUE),
             'phone_number' => $this->input->post('phone_number',TRUE),
@@ -236,14 +244,13 @@ class User_profile extends CI_Controller
 
         $result = $this->User_profile_model->update($this->input->post('id', TRUE), $data);
         if($result){
-            $response = array();
             $response['status']=true;
-            $response['success'] = 'Update Config Successfully.';
-            echo json_encode($response);
+            $response['success'] = 'Update user Successfully.';
         }
         else{
-            echo FALSE;
+            $response['success'] = 'Some error occur while updating';
         }
+        echo json_encode($response);
     }
     
     public function delete($id) 

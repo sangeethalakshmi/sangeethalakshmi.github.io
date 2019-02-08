@@ -92,14 +92,18 @@
                                 <li class="notforadmin showloginbutton"><a href="site.html">Map</a></li>
                                 <li class="foradmin"><a href="users.html">Users</a></li>
                                 <li class="foradmin"><a href="employees.html">Employees</a></li>
-                                <li class="foradmin"><a href="bookappointment.html">Book Appointment</a>
-                                
-                               <li class="showlogoutbutton"><a href="settings.html">Profile</a>
+                                <li class="foradmin"><a href="bookappointment.html">Book Appointment</a></li>
+                                <li class="notforadmin"><a class="showlogoutbutton" href="users.html">Profile</a>
                                     <ul>
-                                        <li class="foradmin"><a href="settings.html">Settings</a></li>
                                         <li class="notforadmin"><a href="myappointments.html">My Appointment</a>
+                                        <li class="notforadmin"><a href="changepassword.html">Change password</a>
                                     </ul>
-                               </li>
+                                </li>
+                                <li class="foradmin"><a href="settings.html">Settings</a>
+                                    <ul>
+                                        <li class="foradmin"><a href="bookappointment.html">Appointment list</a>
+                                    </ul>
+                                </li>
                             </ul>
 
                         </nav>
@@ -196,7 +200,7 @@
                     <div class="form-group"> 
                       <div class="col-sm-offset-2 col-sm-10">
                         <a onclick="updateUser()" class="btn btn-default">Save</a>
-                        <a onclick="renderUsersGrid()" class="btn btn-default">Cancel</a>
+                        <a onclick="cancelUser()" class="btn btn-default">Cancel</a>
                       </div>
                     </div>
                 </form>
@@ -309,42 +313,54 @@
         </footer>
         <!--footer end--> 
         <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Sig in</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <form class="form-horizontal" id="loginform" name="loginform">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="email">Email:</label>
-                                    <div class="col-sm-8">
-                                        <input type="email" class="form-control" name="user_email" id="user_email" placeholder="Enter email">
+                <div class="modal-dialog">
+    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Sign in</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <form class="form-horizontal" id="loginform" name="loginform">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="email">Email:</label>
+                                        <div class="col-sm-8">
+                                            <input type="email" class="form-control" name="user_email" id="user_email" placeholder="Enter email">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="pwd">Password:</label>
-                                    <div class="col-sm-8"> 
-                                        <input type="password" class="form-control" name="user_pwd" id="user_pwd" placeholder="Enter password">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Password:</label>
+                                        <div class="col-sm-8"> 
+                                            <input type="password" class="form-control" name="user_pwd" id="user_pwd" placeholder="Enter password">
+                                        </div>
                                     </div>
-                                </div>
-                                <a href="registerform.html" class="col-sm-3">Register form</a>
-                                <span class="text-danger text-center" id="login_error" style="display:none"></span>
-                            </form>
+                                    <div class="form-group">
+                                        <div class="col-sm-12"> 
+                                            <a href="registerform.html" class="col-sm-4">Register form</a>
+                                            <a href="changepassword.html" class="col-sm-offset-3 col-sm-3 text-right">Forgot Password</a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-offset-1 col-sm-8 nopadding"> 
+                                            <a href="javascript:void(0);" class="btn btn-default btn-sm" onclick="fbLogin()" id="fbLink"><i class="fa fa-facebook"></i></a>
+                                        </div>
+                                    </div>
+                                    <span class="text-danger text-center" id="login_error" style="display:none"></span>
+    
+                                    
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="userloginbutton" class="btn btn-default">Sign in</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" id="userloginbutton" class="btn btn-default">Sign in</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+    
                 </div>
-
             </div>
-        </div>
         <div class="hs_copyright"> Copyright @2008, renukakatta.org. All rights reserved. </div>
         <!--main js file start--> 
         <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script> 

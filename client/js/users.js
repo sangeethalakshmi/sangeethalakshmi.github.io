@@ -10,6 +10,7 @@ function updateUser(from,obj){
   var functionname =  "";
   $('#full_name_error').html("");
   $('#email_address_error').html("");
+  $('#password_error').html('');
   if($('#user_id').val() == ""){
     functionname = 'create';
   }else{
@@ -25,46 +26,52 @@ function updateUser(from,obj){
       functionname = 'update/'+obj.id;
     }
     if (email_address !== '' && full_name !== '') {
+        if (functionname == "create") {
+          if($("#password").val() == ""){
+            $('#password_error').html('Please enter password.');
+            $('#password_error').show();
+            return;
+          }
+        }
         $.ajax({
             type: "POST",
             url: site_url + "user_profile/"+functionname,
             data: user_details,
             success: function (result) {
-                var data = $.parseJSON(result);
-                if (data.success) {
-                  if(functionname =='create'){
-                    $('#user_success').html('User added successfully.');
-                  }else{
-                    $('#user_success').html('User updated successfully.');
-                  }
-                  
+                var data = JSON.parse(result);
+                if(data && data.status) {
+                  $('#user_success').html(data.success);
                   $('#user_success').show();
                   setTimeout(function () {
                       $('#user_success').hide();
                       if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
-                        window.location.href="index.html"
+                        window.location.href="index.html";
                       }else{;
-                        renderUsersGrid();
+                        if (localStorage.getItem('usertype') == 'User') {
+                          window.location.href="index.html";
+                        }else{
+                          renderUsersGrid();
+                        }
                       }
                   }, 2000);
-                }
-                else {
-                    $('#user_error').html(data.error);
+                }else {
+                    $('#user_error').html(data.success);
                     $('#user_error').show();
                     $('#email_address').val('');
                     $('#full_name').val('');
+                    $('#password').val('');
+                    $('#phone_number').val('');
                     $('#user_id').val('');
                 }
             }
         });
-    } else if (email_address == '') {
+    } else if (full_name == '') {
+      $('#full_name_error').html('Please Enter Name.');
+      $('#full_name_error').show();
+    }else if (email_address == '') {
         $('#email_address_error').html('Please Enter Email.');
         $('#email_address_error').show();
-    } else if (full_name == '') {
-        $('#full_name_error').html('Please Enter Name.');
-        $('#full_name_error').show();
-       
-    }
+    } 
 }
 function getAddUserForm(){
   $('.listscreen').hide();
@@ -250,13 +257,26 @@ function renderUsersGrid(){
     }
   });
 }
+function cancelUser(){
+  if (localStorage.getItem('usertype') == 'User') {
+    window.location.href="index.html";
+  }else{
+    renderUsersGrid();
+  }
+}
 $(document).ready(function () {
   setTimeout(function  (argument) {
     // body...
   },1000);
   if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
     getAddUserForm()
-  }else{;
-    renderUsersGrid();
+  }else{
+    if (localStorage.getItem('usertype') == 'User') {
+      var userdetails = JSON.parse(localStorage.getItem('user'));
+      getuserdeatils(userdetails.id);
+    }else{
+      renderUsersGrid();
+    }
+    
   }
 });
