@@ -57,11 +57,26 @@ class User_appointment_model extends CI_Model
           $query1 = $this->db->get('general_settings')->result();
         if (isset($usertype) && isset($userId)) {
             if ( $usertype != 'Super Admin' ) {
-               $query = "SELECT app.*,DATEDIFF(app.appointment_time, now()) AS days,full_name,email_address as email,phone_number  FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
+               $query = "SELECT app.*,DATEDIFF(app.appointment_time, now()) AS days,full_name,email_address as email,phone_number,(case when 
+               (((DATEDIFF(appointment_time,now()) >= 0) && (DATEDIFF(appointment_time,now()) >= (SELECT cancellation_time_days FROM book_appointment.general_settings))) 
+               && app.status = 'CREATED' )
+                THEN
+                     1 
+                ELSE
+                     0 
+                END)
+                 as edit FROM " .$this->table .' app  LEFT JOIN user_profile as u ON user_id = u.id '. $where.' and user_id =  '.$userId.' '.$orderby." LIMIT ". $start.','. $pagesize;
 
             }else{
 
-                $query = 'select * from (select app.*,a.email,a.full_name,a.phone_number from '.$this->table .' as app  LEFT JOIN 
+                $query = 'select *,(case when 
+(((DATEDIFF(appointment_time,now()) >= 0) && (DATEDIFF(appointment_time,now()) >= ((SELECT cancellation_time_days FROM book_appointment.general_settings)-1))) && status = "CREATED" )
+ THEN
+      1 
+ ELSE
+      0 
+ END)
+  as edit from (select app.*,a.email,a.full_name,a.phone_number from '.$this->table .' as app  LEFT JOIN 
                  admin as a ON (app.user_id = a.id and app.created_by != "User")
                  UNION
                 select app.*,a.email_address,a.full_name,a.phone_number from '.$this->table .' as app LEFT JOIN 

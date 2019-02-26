@@ -21,7 +21,9 @@ if (localStorage.getItem('usertype') && localStorage.getItem('usertype').length>
 var yearsofexp = 20;
 $(document).ready(function () {
   yearsofexp = moment().diff('1995-12-04', 'years',false);
-  document.getElementById("yearsofexp").innerHTML = yearsofexp;
+  if (document.getElementById("yearsofexp")) {
+    document.getElementById("yearsofexp").innerHTML = yearsofexp;
+  }
 });
 
 function doAfterSucess(result){

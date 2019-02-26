@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 var appointmentslist = [];
 function createorUpdateAppointment(from,obj,details){
   var functionname =  "";
   $('#appointment_date_error').html("");
   $('#appointment_time_error').html("");
-  if($('#appointment_id').val() == ""){
     functionname = 'create';
-  }else{
-    functionname = 'update/'+$('#appointment_id').val();
-  }
     var appointment_details = $('#appointmentform').serialize();
     var appointment_date = $("input[name=appointment_date]:checked").val();
     var appointment_time = $("input[name=appointment_time]:checked").val();
@@ -36,14 +30,6 @@ function createorUpdateAppointment(from,obj,details){
           appointment_details += '&userType='+ localStorage.getItem('usertype');
         };
         appointment_details += '&cancelled_by=NULL';
-      }else{
-        if ($('#status1').val() == "CANCELLED") {
-          if (localStorage.getItem('usertype') != 'User') {
-            appointment_details += '&cancelled_by=Super Admin';
-          }else{
-            appointment_details += '&cancelled_by=User';
-          }
-        }
       };
     };
     if (appointment_date && appointment_date != '' && appointment_time && appointment_time != '') {
@@ -161,17 +147,16 @@ function getAddAppointmentForm(){
   $('.addscreen').show();
   $('input[name=appointment_time]').attr('checked',false);
   $('#appointment_date').val("");
-  $('#appointment_id').val("");
-  $('#status').val("");
-  $('#active').val("");
   loadAddAppointmentform('addform');
 }
-function deleteAppointmentConfirmDetails(id) {
+function cancelAppointmentConfirmDetails(id){
+  deleteAppointmentConfirmDetails(id,'cancel')
+}
+function confirmAppointmentConfirmDetails(id){
+  deleteAppointmentConfirmDetails(id,'confirm')
+}
+function deleteAppointmentConfirmDetails(id,text) {
   data = appointmentslist[id];
-  var text = "delete";
-  if (localStorage.getItem('usertype') == 'User') {
-    text = "cancel";
-  };
   if (confirm('Are you sure want to '+text+'?')) {
     var obj = {
       "id":data.id,
@@ -180,112 +165,16 @@ function deleteAppointmentConfirmDetails(id) {
     };
     appointment_details = 'id='+data.id+'&user_id='+data.user_id+'&full_name='+ data.full_name+'&email_address='+ data.email+'&phone_number='+ data.phone_number;
     if (text == "cancel") {
-      appointment_details += '&status=CANCELLED&deleted=0&active=1'
+      appointment_details += '&status=CANCELLED&deleted=0&active=1&cancelled_by='+localStorage.getItem('usertype');
     }else if (text == 'delete') {
       appointment_details += '&status='+ data.status+'&deleted=1&active=0';
+    }else if (text == 'confirm') {
+      appointment_details += '&status=CONFIRMED&deleted=0&active=1'
     };
     createorUpdateAppointment('delete',obj,appointment_details);
   }
 }
 
-function getAppointmentdeatils(id){
-  $('.appointmentdatebtngroup').html("");
-  $('input[type=radio][name=appointment_date]').remove();
-  $('.listscreen').hide();
-  $('.addscreen').show();
-  $('input[name=appointment_time]').attr('checked',false);
-  $('input[name=appointment_date]').attr('checked',false);
-  $('#appointment_date').val("");
-  $('#appointment_id').val("");
-  $('#status1').val("");
-  $('#active').val("");
-  $('#appointment_error').html('');
-  $('#appointment_error').hide();
-  $('#appointment_success').html('');
-  $('#appointment_success').hide();
-  var dayaftertomorrow = moment();
-  var startDate = moment();
-  var endDate = moment().add(9, 'days');
-  $.ajax({
-      type: "get",
-      url: site_url + 'User_appointment/read/'+id,
-      success: function (result) {
-        var data1 = $.parseJSON(result);
-        var disableday = 6;
-        var weekdaynumbers = {"Sunday" : 0,"Monday" : 1,"Tuesday" : 2,"Wednesday" : 3,"Thursday" : 4,"Friday" : 5,"Saturday" : 6}
-       if (data1.success) {
-          console.log("correct login");
-          $('.modal').modal('hide');
-          if (data1.appointment) {
-            $.ajax({
-              type: "get",
-              url: site_url + 'User_appointment/getGeneralAppointmetSettings',
-              success: function (result) {
-                var data = $.parseJSON(result);
-                if (data.success) {
-                  if (data.generalSettings) {
-                    var statrtdays = 0;
-                    var enddays = 0;
-                    if (data.generalSettings.show_appointments_before_days) {
-                        statrtdays = parseInt(data.generalSettings.show_appointments_before_days);
-                        if (statrtdays) {
-                          dayaftertomorrow = moment(data1.appointment.date)
-                        };
-                        startDate = dayaftertomorrow;
-                    };
-                    if (data.generalSettings.show_appointment_upto) {
-                        enddays = parseInt(data.generalSettings.show_appointment_upto);
-                        if (enddays) {
-                          endDate = moment(data1.appointment.date).add(enddays, 'days');
-                        }else{
-                          endDate = moment(data1.appointment.date).add(data.generalSettings.show_appointment_upto, 'days');
-                        };
-                    };
-                    if (data.generalSettings.leave_on) {
-                        disableday = weekdaynumbers[data.generalSettings.leave_on];
-                    };
-                    
-                  };
-                }
-                var availdates = enumerateDaysBetweenDates(startDate, endDate);
-                if (availdates && availdates.length>0) {
-                  $.each(availdates, function(availdate, availvalue) { 
-                    $('.appointmentdatebtngroup').append('<label class="btn btn-default"><input type="radio" id="_'+availvalue.YYYYMMDD+'" name="appointment_date" value="'+availvalue.YYYYMMDD+'" />'+availvalue.dddmmmdo+'</label>')
-                  });
-                };
-                getappointmentsettings(data1.appointment.date);
-                if (localStorage.getItem('usertype') && localStorage.getItem('usertype') != 'User') {
-                  $('.showhiddenstatus').hide();
-                  $('.hidehiddenstatus').show();
-                }else{
-                  $('.showhiddenstatus').show();
-                  $('.hidehiddenstatus').hide();
-                };
-                $('#status1').val(data1.appointment.status);
-                
-                setTimeout(function  () {
-                 
-                  $('#_'+data1.appointment.date).attr('checked',true);
-                  $('#_'+data1.appointment.date).parent().addClass('active');
-                  $("#appointmentdatebtngroup :input").change(function() {
-                    if (this && this.value) {
-                      //var date1 = e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate();
-                      getappointmentsettings(this.value)
-                    };
-                  });
-                    $('.appointmenttimebtngroup').append('<label class="btn btn-default active"><input type="radio" id="_'+data1.appointment.time+'" name="appointment_time" value="'+data1.appointment.time+'" />'+data1.appointment.time+'</label>')
-                    $('#_'+data1.appointment.time).attr('checked',true);
-                    $('#description').val(data1.appointment.description);
-                    $('#appointment_id').val(data1.appointment.id);
-                $('#active').val(data1.appointment.active);
-                },500);
-                }
-            });
-          } 
-        } 
-      }
-    });
-}
 function renderAppointmentsGrid(){
   $('.listscreen').show();
   $('.addscreen').hide();
@@ -311,7 +200,7 @@ function renderAppointmentsGrid(){
       type:"number"},
       {name:"user_id",
       type:"number"},{name:"days",
-      type:"number"}],
+      type:"number"},{name:"description",type:"string"},{name:"edit",type:"number"}],
         cache: false,
     url: site_url + 'User_appointment/getAppointments',
     beforeprocessing: function (data) {
@@ -354,51 +243,48 @@ function renderAppointmentsGrid(){
         datafield: 'user_id',hidden:true,
         filterable: false
       },  
-          {
-          filterable: false,
-            text: 'Details', align: 'center', datafield: 'full_name',
-            cellsRenderer: function (row, column, value, rowData) {
-              var container = '<div class="col-xs-12 nopadding">'
-              var leftcolumn = '<div class="col-xs-12 text-center nopadding col-sm-1">';
-              var rightcolumn = '<div class="col-xs-12 text-left col-sm-7">';
-              var lastcolumn = '<div class="col-xs-12 text-center col-sm-4">';
-              var image =  '<div style="margin: 10px;"><img width="60" height="60" style="margin:auto;" src="images/testimonial/avatar.jpeg"/></div>';
-              var full_name = "<div style='margin: 10px;'><b>" + rowData.full_name + "</b></div>";
-              var Email = "<div style='margin: 10px;'>" + rowData.email+"(" + rowData.phone_number + ")</div>";
-              var appointment = "<div style='margin: 10px;'>" + moment(rowData.appointment_time).format('ddd, MMM D, LT') + "</div>";
-              
-              var status = "<div style='margin: 10px;'> " + rowData.status + "</div>";
-              var editbutton = '<div class="gridicons" style="margin: 15px 10px;"><a  href="javascript:void(0)" onClick="getAppointmentdeatils('+rowData.id+');" class="btn btn-default btn-sm">&nbsp;&nbsp;&nbsp;<i class="fa fa-pencil"></i> Edit&nbsp;&nbsp;&nbsp;</a></div>';
-              var deletebutton = '';
+      {
+        filterable: false,
+          text: 'Details', align: 'center', datafield: 'full_name',
+          cellsRenderer: function (row, column, value, rowData) {
+            var container = '<div class="col-xs-12 nopadding">'
+            var leftcolumn = '<div class="col-xs-12 text-center nopadding col-sm-1">';
+            var rightcolumn = '<div class="col-xs-12 text-left col-sm-7">';
+            var lastcolumn = '<div class="col-xs-12 text-center col-sm-4">';
+            var image =  '<div style="margin: 10px;"><img width="60" height="60" style="margin:auto;" src="images/testimonial/avatar.jpeg"/></div>';
+            var full_name = "<div style='margin: 10px;' class='foradmin'><b>" + rowData.full_name + "</b></div>";
+            var Email = "<div style='margin: 10px;' class='foradmin'>" + rowData.email+"(" + rowData.phone_number + ")</div>";
+            var appointment = "<div style='margin: 10px;'>" + moment(rowData.appointment_time).format('ddd, MMM D, LT') + "</div>";
+            var description = "<div style='margin: 10px;'>" +rowData.description+ "</div>";
+            var status = "<div style='margin: 10px;'> " + rowData.status + "</div>";
+             var confirmbutton = '<div class="gridicons" style="margin: 15px 10px;"></div>';
+            var cancelbutton = '<div class="gridicons" style="margin: 15px 10px;"></div>';
+            if (rowData.edit == 1) {
+              cancelbutton = '<div class="gridicons" style="margin: 15px 10px;"><a href="javascript:void(0)" onClick="cancelAppointmentConfirmDetails('+row+');" class="btn btn-default btn-sm"><i class="fa fa-times-circle-o"></i> Cancel&nbsp;</a></div>';
               if (localStorage.getItem('usertype') == 'Super Admin') {
-                 deletebutton = '<div class="gridicons" style="margin: 15px 10px;"><a href="javascript:void(0)" onClick="deleteAppointmentConfirmDetails('+row+');" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i> Delete</a></div>';
-              }else{
-                if (rowData.days >= 2) {
-                  if (rowData.status.toLowerCase() == "created") {
-                    deletebutton = '<div class="gridicons" style="margin: 15px 10px;"><a href="javascript:void(0)" onClick="deleteAppointmentConfirmDetails('+row+');" class="btn btn-default btn-sm"><i class="fa fa-times-circle-o"></i> Cancel</a></div>'
-                  }
-                }
+                confirmbutton = '<div class="gridicons" style="margin: 15px 10px;"><a href="javascript:void(0)" onClick="confirmAppointmentConfirmDetails('+row+');" class="btn btn-default btn-sm"><i class="fa fa-thumbs-up"></i> Confirm</a></div>';
               }
-              leftcolumn +=image;
-              leftcolumn += status;
-
+            }
+            leftcolumn +=image;
+            leftcolumn += status;
+            if (localStorage.getItem('usertype') != 'User') {
               rightcolumn += full_name;
               rightcolumn += Email;
-              rightcolumn += appointment;
-
-              lastcolumn += editbutton;
-              lastcolumn += deletebutton;
-
-              leftcolumn += "</div>";
-              rightcolumn += "</div>";
-              lastcolumn += "</div>";
-              container += leftcolumn;
-              container += rightcolumn;
-              container += lastcolumn;
-              container += "</div>";
-              return container;
             }
+            rightcolumn += appointment;
+            rightcolumn += description;
+            lastcolumn += cancelbutton;
+            lastcolumn += confirmbutton;
+            leftcolumn += "</div>";
+            rightcolumn += "</div>";
+            lastcolumn += "</div>";
+            container += leftcolumn;
+            container += rightcolumn;
+            container += lastcolumn;
+            container += "</div>";
+            return container;
           }
+        }
       
     ];
   var dataadapter = new $.jqx.dataAdapter(source,
@@ -433,15 +319,20 @@ function renderAppointmentsGrid(){
 
 }
 
-var enumerateDaysBetweenDates = function(startDate, endDate) {
+var enumerateDaysBetweenDates = function(startDate, endDate,disableday) {
   var now = startDate, dates = [];
- while (now.isSameOrBefore(endDate)) {
-        dates.push({'YYYYMMDD':now.format('YYYY-MM-DD'),"dddmmmdo":now.format('ddd, MMM D')});
-        now.add(1, 'days');
+  while (now.isSameOrBefore(endDate)) {
+    if (now.isoWeekday() == disableday) {
+      now.add(1, 'days');
+     // endDate.add(1, 'days');
     }
+    dates.push({'YYYYMMDD':now.format('YYYY-MM-DD'),"dddmmmdo":now.format('ddd, MMM D')});
+    now.add(1, 'days');
+  }
   return dates;
 };
 function getDateRangesForGivenDates(){
+  $('.appointmentdatebtngroup').html("");
   var dayaftertomorrow = moment().add(2, 'days');
   var date = dayaftertomorrow.format('YYYY-MM-DD');
   var startDate = moment().add(2, 'days');
@@ -482,7 +373,7 @@ function getDateRangesForGivenDates(){
           
         };
       }
-      var availdates = enumerateDaysBetweenDates(startDate, endDate);
+      var availdates = enumerateDaysBetweenDates(startDate, endDate,disableday);
       if (availdates && availdates.length>0) {
         $.each(availdates, function(availdate, availvalue) { 
           $('.appointmentdatebtngroup').append('<label class="btn btn-default"><input type="radio" id="_'+availvalue.YYYYMMDD+'" name="appointment_date" value="'+availvalue.YYYYMMDD+'" />'+availvalue.dddmmmdo+'</label>')
@@ -601,5 +492,4 @@ $(document).ready(function () {
   });
 
 });
-
 
