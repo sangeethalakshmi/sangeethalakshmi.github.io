@@ -27,7 +27,6 @@ function doAfterSucess(result){
             if (data.user.role) {
               localStorage.setItem('usertype', data.user.role);
               if (data.user.role == 'Super Admin') {
-                
                 $('.foradmin').show();
                 $('.notforadmin').hide();
               }
