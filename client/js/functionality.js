@@ -18,6 +18,12 @@ if (localStorage.getItem('usertype') && localStorage.getItem('usertype').length>
   $('.showlogoutbutton').hide();
   $('.showloginbutton').show();
 };
+var yearsofexp = 20;
+$(document).ready(function () {
+  yearsofexp = moment().diff('1995-12-04', 'years',false);
+  document.getElementById("yearsofexp").innerHTML = yearsofexp;
+});
+
 function doAfterSucess(result){
   var data = $.parseJSON(result);
         if (data.success) {
