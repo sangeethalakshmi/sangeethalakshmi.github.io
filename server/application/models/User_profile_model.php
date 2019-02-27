@@ -98,10 +98,10 @@ class User_profile_model extends CI_Model
     //checking for change password
     public function checkpassword($arr)
     {
-        $user_id=$this->session->userdata('user_id');
+        //$user_id=$this->session->userdata('user_id');
         $this->db->select('*');
         $this->db->from($this->table);
-        $this->db->where('email_address',$arr['email_address']);
+        $this->db->where('id',$arr['id']);
         $query=$this->db->get();
         $result=$query->result();
        return $result;
@@ -111,7 +111,7 @@ class User_profile_model extends CI_Model
     function updateUserPassword($arr){
         $layout_data = array();
         $layout_data['password'] = $arr['password'];
-        $this->db->where('email_address',$arr['email_address']);
+        $this->db->where('id',$arr['id']);
         $this->db->update($this->table,$layout_data);
         return true;
     }

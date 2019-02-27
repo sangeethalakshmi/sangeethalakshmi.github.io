@@ -280,7 +280,7 @@ class User_profile extends CI_Controller
         $response = array();
         $response['status']=false;
         $response['success'] = '';
-        $arr['email_address'] = $this->input->post('email_address');
+        $arr['id'] = $this->input->post('id');
         $arr['password'] = $this->input->post('new_password');
         $result = $this->User_profile_model->checkpassword($arr);
         if ($result) {
@@ -294,7 +294,7 @@ class User_profile extends CI_Controller
             }
             echo json_encode($response);
         } else {
-            $response['success'] = "Email doesn't exists";
+            $response['success'] = "User doesn't exists";
             echo json_encode($response); 
         }
     }

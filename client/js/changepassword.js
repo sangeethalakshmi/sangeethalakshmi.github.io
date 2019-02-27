@@ -22,11 +22,16 @@ function varifyBeforeCheckPassword(newpwd, confirmpwd){
 }
 function updateUserPassword(){
     hideMessagesBlock();
-    var email_address = $("#email_address").val();
+    //var email_address = $("#email_address").val();
     var newpwd = $("#new_password").val();
     var confirmpwd = $("#confirm_password").val();
     var postdata = $('#change_password').serialize();
-    if (email_address !== ''){
+    var userdeatils = JSON.parse(localStorage.getItem('user'));
+    if(userdeatils && userdeatils.id){
+        postdata += '&id='+userdeatils.id;
+    }
+   
+    if (newpwd !== '' && confirmpwd !== ""){
         $.ajax({
             type: "POST",
             url: site_url + "user_profile/changepassword",
@@ -50,7 +55,7 @@ function updateUserPassword(){
             }
         })
     }else{
-        $('#error_msg').html('Please enter email');
+        $('#error_msg').html('Please enter passwords');
         $('#error_msg').show();
     }
 }
