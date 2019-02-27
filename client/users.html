@@ -196,9 +196,6 @@
                         <input type="text" class="form-control" id="phone_number" name="phone_number" required placeholder="Enter phone">
                       </div>
                     </div>
-                    <input type="hidden" class="form-control" id="user_id" name="id">
-                    <input type="hidden" class="form-control" id="status1" name="status">
-                    <input type="hidden" class="form-control" id="active" name="active">
                     <span id="user_success" class="text-success"></span>
                     <span id="user_error" class="text-danger"></span>
                     <div class="form-group"> 
@@ -208,6 +205,30 @@
                       </div>
                     </div>
                 </form>
+            </div>
+            <div class="row detailsscreen margin_40_top">
+                    <div class="hs_comment">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 text-center">
+                                <img src="images/testimonial/avatar.jpeg" alt="">
+                                
+                                <a onclick="cancelUser()" class="btn btn-default margin_10_top foradmin">Back</a> 
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9">
+                              <p class="h4" id="usernameindetails"></p>
+                                <p><i class="fa  fa-envelope"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span id="emailindetails"></span></p>
+                                <p ><i class="fa fa-mobile-phone"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span id="phoneindetails"></span></p>
+                                <div class="hs_comment_date">
+                                    <ul>
+                                    <li><a href=""><i class="fa fa-female"></i><span  id="genderindetails"></span></a></li>
+                                    <li><a href=""><i class="fa fa-calendar"></i> <span  id="dobindetails"></span></a></li>
+                                    <li><a href=""><i class="fa fa-info-circle"></i> <span  id="ageindetails"></span> Years</a></li>
+                                    </ul>
+                                </div>
+                                <a href="bookappointment.html" class="btn btn-default pull-right notforadmin">Book Appointment</a>
+                            </div>
+                        </div>
+                    </div>
             </div>
             <!-- /Home end-->
            <div class="hs_margin_40"></div>

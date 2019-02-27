@@ -354,6 +354,12 @@ function getDateRangesForGivenDates(){
               statrtdays = parseInt(data.generalSettings.show_appointments_before_days);
               if (statrtdays) {
                 dayaftertomorrow = moment().add(statrtdays, 'days')
+                if (data.generalSettings.leave_on) {
+                  if ((moment().add(statrtdays, 'days')).isoWeekday() == weekdaynumbers[data.generalSettings.leave_on]) {
+                    dayaftertomorrow = moment().add(statrtdays+1, 'days')
+                  }
+                }
+                
                 date = dayaftertomorrow.format('YYYY-MM-DD');
               };
               startDate = dayaftertomorrow;

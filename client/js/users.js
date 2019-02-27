@@ -11,78 +11,69 @@ function updateUser(from,obj){
   $('#full_name_error').html("");
   $('#email_address_error').html("");
   $('#password_error').html('');
-  if($('#user_id').val() == ""){
-    functionname = 'create';
-  }else{
-    functionname = 'update/'+$('#user_id').val();
+  functionname = 'create';
+  var user_details = $('#usercreateorupdateform').serialize();
+  var full_name = $("#full_name").val();
+  var email_address = $("#email_address").val();
+  if(from && from == "delete"){
+    user_details = obj;
+    full_name = obj.full_name;
+    email_address =  obj.email_address;
+    functionname = 'update/'+obj.id;
   }
-    var user_details = $('#usercreateorupdateform').serialize();
-    var full_name = $("#full_name").val();
-    var email_address = $("#email_address").val();
-    if(from && from == "delete"){
-      user_details = obj;
-      full_name = obj.full_name;
-      email_address =  obj.email_address;
-      functionname = 'update/'+obj.id;
-    }
-    if (email_address !== '' && full_name !== '') {
-        if (functionname == "create") {
-          if($("#password").val() == ""){
-            $('#password_error').html('Please enter password.');
-            $('#password_error').show();
-            return;
-          }
+  if (email_address !== '' && full_name !== '') {
+      if (functionname == "create") {
+        if($("#password").val() == ""){
+          $('#password_error').html('Please enter password.');
+          $('#password_error').show();
+          return;
         }
-        $.ajax({
-            type: "POST",
-            url: site_url + "user_profile/"+functionname,
-            data: user_details,
-            success: function (result) {
-                var data = JSON.parse(result);
-                if(data && data.status) {
-                  $('#user_success').html(data.success);
-                  $('#user_success').show();
-                  setTimeout(function () {
-                      $('#user_success').hide();
-                      if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
+      }
+      $.ajax({
+          type: "POST",
+          url: site_url + "user_profile/"+functionname,
+          data: user_details,
+          success: function (result) {
+              var data = JSON.parse(result);
+              if(data && data.status) {
+                $('#user_success').html(data.success);
+                $('#user_success').show();
+                setTimeout(function () {
+                    $('#user_success').hide();
+                    if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
+                      window.location.href="index.html";
+                    }else{;
+                      if (localStorage.getItem('usertype') == 'User') {
                         window.location.href="index.html";
-                      }else{;
-                        if (localStorage.getItem('usertype') == 'User') {
-                          window.location.href="index.html";
-                        }else{
-                          renderUsersGrid();
-                        }
+                      }else{
+                        renderUsersGrid();
                       }
-                  }, 2000);
-                }else {
-                    $('#user_error').html(data.success);
-                    $('#user_error').show();
-                    $('#email_address').val('');
-                    $('#full_name').val('');
-                    $('#password').val('');
-                    $('#phone_number').val('');
-                    $('#user_id').val('');
-                }
-            }
-        });
-    } else if (full_name == '') {
-      $('#full_name_error').html('Please Enter Name.');
-      $('#full_name_error').show();
-    }else if (email_address == '') {
-        $('#email_address_error').html('Please Enter Email.');
-        $('#email_address_error').show();
-    } 
+                    }
+                }, 2000);
+              }else {
+                  $('#user_error').html(data.success);
+                  $('#user_error').show();
+                  $('#email_address').val('');
+                  $('#full_name').val('');
+                  $('#phone_number').val('');
+              }
+          }
+      });
+  } else if (full_name == '') {
+    $('#full_name_error').html('Please Enter Name.');
+    $('#full_name_error').show();
+  }else if (email_address == '') {
+      $('#email_address_error').html('Please Enter Email.');
+      $('#email_address_error').show();
+  } 
 }
 function getAddUserForm(){
   $('.listscreen').hide();
   $('.addscreen').show();
+  $('.detailsscreen').hide();
   $('#full_name').val("");
   $('#email_address').val("");
   $('#phone_number').val("");
-  $('#user_id').val("");
-  $('#role').val("");
-  $('#status').val("");
-  $('#active').val("");
 }
 function deleteUserConfirmDetails(id) {
   data = userslist[id];
@@ -102,30 +93,37 @@ function deleteUserConfirmDetails(id) {
 }
 function getuserdeatils(id){
   $('.listscreen').hide();
-  $('.addscreen').show();
+  $('.addscreen').hide();
+  $('.detailsscreen').show();
+  $('.notforadmin').show();
+  $('.foradmin').hide();
+  $('#usernameindetails').text('');
+  $('#emailindetails').text('');
+  $('#phoneindetails').text('');
+  $('#genderindetails').text('');
+  $('#dobindetails').text('');
   $('#full_name').val("");
   $('#email_address').val("");
   $('#phone_number').val("");
-  $('#user_id').val("");
-  $('#role').val("");
-  $('#status1').val("");
-  $('#active').val("");
+  $('#ageindetails').text("");
+  if(localStorage.getItem('usertype') != 'User'){
+    $('.notforadmin').hide();
+    $('.foradmin').show();
+  }
   $.ajax({
       type: "get",
       url: site_url + 'user_profile/read/'+id,
       success: function (result) {
         var data = $.parseJSON(result);
         if (data.success) {
-          console.log("correct login");
-          $('.modal').modal('hide');
           if (data.user) {
-            $('#full_name').val(data.user.full_name);
-            $('#email_address').val(data.user.email_address);
-            $('#phone_number').val(data.user.phone_number);
-            $('#user_id').val(data.user.id);
-            $('#role').val(data.user.role);
-            $('#status1').val(data.user.status);
-            $('#active').val(data.user.active);
+            $('#usernameindetails').text(data.user.full_name);
+            $('#emailindetails').text(data.user.email_address);
+            $('#phoneindetails').text(data.user.phone_number);
+            $('#genderindetails').text(data.user.gender);
+            $('#dobindetails').text(data.user.DOB);
+            var age = moment().diff(data.user.DOB, 'years',false);
+            $('#ageindetails').text(age);
           } 
         } 
       }
@@ -133,6 +131,7 @@ function getuserdeatils(id){
 }
 function renderUsersGrid(){
   $('.listscreen').show();
+  $('.detailsscreen').hide();
   $('.addscreen').hide();
   var source = {
     datatype: "json",
@@ -235,7 +234,7 @@ function renderUsersGrid(){
           var full_name = "<div style='margin: 10px;'><b>Name:</b>" + rowData.full_name + "</div>";
           var Email = "<div style='margin: 10px;'><b>Email:</b> " + rowData.email_address + "</div>";
           var createdat = "<div style='margin: 10px;'><b>Created at:</b> " + moment(rowData.created_at).format('ddd, MMM D') + "</div>";
-          var editbutton = '<div class="text-left gridicons" style="margin: 10px;"><b>Edit:    </b><a  href="javascript:void(0)" onClick="getuserdeatils('+rowData.id+');"><i class="fa fa-pencil"></i></a></div>';
+          var editbutton = '<div class="text-left gridicons" style="margin: 10px;"><a  href="javascript:void(0)" onClick="getuserdeatils('+rowData.id+');" class="btn btn-default btn-sm"><i class="fa fa-expand"></i>&nbsp;Details&nbsp;</a></div>';
           var status = "<div style='margin: 10px;'> " + rowData.status + "</div>";
 
           leftcolumn +=image;
@@ -244,14 +243,14 @@ function renderUsersGrid(){
           
           var phone = "<div style='margin: 10px;'><b>Phone:</b> " + rowData.phone_number + "</div>";
           var Role = "<div style='margin: 10px;'><b>Password:</b> " + rowData.password+ "</div>";
-          var deletebutton = '<div class="text-left gridicons" style="margin: 10px;"><b>Delete:   </b><a href="javascript:void(0)" onClick="deleteUserConfirmDetails('+row+');"><i class="glyphicon glyphicon-trash"></i></a></div>';
+          var deletebutton = '<div class="gridicons" style="margin: 15px 10px;"><a href="javascript:void(0)" onClick="deleteUserConfirmDetails('+row+');" class="btn btn-default btn-sm"><i class="fa fa-ban"></i>&nbsp;&nbsp;Block</a></div>';
           
           rightcolumn += full_name;
           rightcolumn += Email;
           rightcolumn += createdat;
           rightcolumn += phone;
           rightcolumn += "</div>";
-          lastcolumn += Role;
+          //lastcolumn += Role;
           lastcolumn += editbutton;
           lastcolumn += deletebutton;
           lastcolumn += "</div>";
