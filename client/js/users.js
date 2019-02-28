@@ -56,6 +56,9 @@ function updateUser(from,obj){
                   $('#email_address').val('');
                   $('#full_name').val('');
                   $('#phone_number').val('');
+                  $('#password').val('');
+                  $('#gender').val('M');
+                  $('#DOB').val('');
               }
           }
       });
@@ -74,10 +77,19 @@ function getAddUserForm(){
   $('#full_name').val("");
   $('#email_address').val("");
   $('#phone_number').val("");
+  $('#password').val('');
+  $('#gender').val('M');
+  $('#dobdate').datepicker({
+    format: "yyyy-mm-dd",
+    startDate: "1900-01-01",
+    endDate: "now()",
+    defaultViewDate: { year: 1970, month: 00, day: 01 }
+  });
+  $('#DOB').val('1970-01-01');
 }
 function deleteUserConfirmDetails(id) {
   data = userslist[id];
-  if (confirm('Are you sure want to delete?')) {
+  if (confirm('Are you sure want to block?')) {
     var obj = {
       'full_name': data.full_name,
       'email_address': data.email_address,
@@ -100,7 +112,10 @@ function getuserdeatils(id){
   $('#usernameindetails').text('');
   $('#emailindetails').text('');
   $('#phoneindetails').text('');
+  $('#genderindetailsli').show();
+  $('#genderindetails1li').hide();
   $('#genderindetails').text('');
+  $('#genderindetails1').text('');
   $('#dobindetails').text('');
   $('#full_name').val("");
   $('#email_address').val("");
@@ -120,7 +135,14 @@ function getuserdeatils(id){
             $('#usernameindetails').text(data.user.full_name);
             $('#emailindetails').text(data.user.email_address);
             $('#phoneindetails').text(data.user.phone_number);
-            $('#genderindetails').text(data.user.gender);
+            if(data.user.gender == 'M'){
+              $('#genderindetails').text(data.user.gender);
+            }else{
+              $('#genderindetailsli').hide();
+              $('#genderindetails1li').show();
+              $('#genderindetails1').text(data.user.gender);
+            }
+            
             $('#dobindetails').text(data.user.DOB);
             var age = moment().diff(data.user.DOB, 'years',false);
             $('#ageindetails').text(age);
@@ -272,11 +294,8 @@ function cancelUser(){
   }
 }
 $(document).ready(function () {
-  setTimeout(function  (argument) {
-    // body...
-  },1000);
   if (window.location.pathname && window.location.pathname.indexOf("registerform.html")>-1) {
-    getAddUserForm()
+    getAddUserForm();
   }else{
     if (localStorage.getItem('usertype') == 'User') {
       var userdetails = JSON.parse(localStorage.getItem('user'));

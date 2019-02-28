@@ -107,6 +107,18 @@ class User_profile_model extends CI_Model
        return $result;
     }
 
+    //checking for user
+    public function checkuser($arr)
+    {
+        //$user_id=$this->session->userdata('user_id');
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->where('email_address',$arr['email_address']);
+        $query=$this->db->get();
+        $result=$query->result();
+       return $result;
+    }
+
     //upadete user password functionality
     function updateUserPassword($arr){
         $layout_data = array();

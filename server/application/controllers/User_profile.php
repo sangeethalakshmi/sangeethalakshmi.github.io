@@ -214,7 +214,7 @@ class User_profile extends CI_Controller
         $response['status']=false;
         $response['success'] = '';
         $arr['email_address'] = $this->input->post('email_address');
-        $res = $this->User_profile_model->checkpassword($arr);
+        $res = $this->User_profile_model->checkuser($arr);
         if($res){
             $response['success'] = 'Already user exists with this email';
         }else{
@@ -223,6 +223,8 @@ class User_profile extends CI_Controller
                 'phone_number' => $this->input->post('phone_number',TRUE),
                 'email_address' => $this->input->post('email_address',TRUE),
                 'password' =>  $this->input->post('password',TRUE),
+                'DOB' => $this->input->post('DOB',TRUE),
+                'gender' => $this->input->post('gender',TRUE),
                 'status' => 'ACTIVE',
                 'active' => 1,
                 'deleted' => 0

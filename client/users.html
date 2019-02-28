@@ -191,11 +191,40 @@
                       <span class="text-danger" id="email_address_error"></span>
                     </div>
                     <div class="form-group">
+                            <label class="control-label col-sm-2" for="password">Password:</label>
+                            <div class="col-sm-8">
+                                <input type="password" id="password" name="password" class="form-control" required placeholder="Password" >
+                            </div>
+                            <span class="text-danger" id="password_error"></span>
+                        </div>
+                    <div class="form-group">
                       <label class="control-label col-sm-2" for="phone">Phone</label>
                       <div class="col-sm-8"> 
                         <input type="text" class="form-control" id="phone_number" name="phone_number" required placeholder="Enter phone">
                       </div>
                     </div>
+                    <div class="form-group">
+                            <label class="control-label col-sm-2" for="gender"></label>
+                            <div class="col-sm-8">
+                                <label class="radio-inline">
+                                    <input type="radio" value="M" name="gender" checked>Male
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="F" name="gender">Female
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="DOB">DOB:</label>
+                            <div class="col-sm-8">
+                                    <div class="input-group date" id="dobdate" data-provide="datepicker">
+                                            <input type="text" name="DOB" id="DOB" class="form-control">
+                                            <div class="input-group-addon">
+                                                <span class="glyphicon glyphicon-th"></span>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
                     <span id="user_success" class="text-success"></span>
                     <span id="user_error" class="text-danger"></span>
                     <div class="form-group"> 
@@ -220,7 +249,8 @@
                                 <p ><i class="fa fa-mobile-phone"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span id="phoneindetails"></span></p>
                                 <div class="hs_comment_date">
                                     <ul>
-                                    <li><a href=""><i class="fa fa-female"></i><span  id="genderindetails"></span></a></li>
+                                    <li id="genderindetails1li"><a href=""><i class="fa fa-female"></i><span  id="genderindetails1"></span></a></li>
+                                    <li id="genderindetailsli"><a href=""><i class="fa fa-male"></i><span  id="genderindetails"></span></a></li>
                                     <li><a href=""><i class="fa fa-calendar"></i> <span  id="dobindetails"></span></a></li>
                                     <li><a href=""><i class="fa fa-info-circle"></i> <span  id="ageindetails"></span> Years</a></li>
                                     </ul>
@@ -403,6 +433,7 @@
         <script type="text/javascript" src="js/jqwidgets/jqxdropdownlist.js"></script> 
         <script type="text/javascript" src="js/jqwidgets/jqxscrollbar.js"></script>
         <script type="text/javascript" src="js/jqwidgets/jqxdatatable.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="js/custom.js"></script> 
         <script type="text/javascript" src="js/functionality.js"></script> 
         <script type="text/javascript" src="js/users.js"></script> 
