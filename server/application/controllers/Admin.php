@@ -122,7 +122,7 @@ class Admin extends CI_Controller
                     $tmpdatafield = $filterdatafield;
             }
         }
-        $orderby = "";
+        $orderby = "order by created_at DESC";
     $sortdatafield = $this->input->get("sortdatafield");
     $sortorder = $this->input->get("sortorder");
     if (isset($sortdatafield) && isset($sortorder) && ($sortorder == "asc"  || $sortorder == "desc"))
@@ -169,31 +169,40 @@ class Admin extends CI_Controller
     
     public function create() 
     {
-        $data = array(
-            'full_name' => $this->input->post('full_name',TRUE),
-            'phone_number' => $this->input->post('phone_number',TRUE),
-            'email' => $this->input->post('email',TRUE),
-            'role' => 'Employee',
-            'status' => 'ACTIVE',
-            'active' => 1,
-            'deleted' => 0
-        );
-
-        $result = $this->Admin_model->insert($data);
-         if($result){
-            $response = array();
-            $response['status']=true;
-            $response['success'] = 'Add Employee Successfully.';
-            echo json_encode($response);
+        $arr = array();
+        $response = array();
+        $response['status']=false;
+        $response['success'] = '';
+        $arr['email'] = $this->input->post('email');
+        $res = $this->Admin_model->checkEmployee($arr);
+        if($res){
+            $response['success'] = 'Already employee exists with this email';
+        }else{
+            $data = array(
+                'full_name' => $this->input->post('full_name',TRUE),
+                'phone_number' => $this->input->post('phone_number',TRUE),
+                'email' => $this->input->post('email',TRUE),
+                'password' =>  $this->input->post('password',TRUE),
+                'role' => $this->input->post('role',TRUE),
+                'status' => 'ACTIVE',
+                'active' => 1,
+                'deleted' => 0
+            );
+            $result = $this->Admin_model->insert($data);
+             if($result){
+                $response['status']=true;
+                $response['success'] = 'Add Employee Successfully.';
+            }
+            else{
+                $response['success'] = 'Some error occur while adding employee';
+            }
         }
-        else{
-            echo FALSE;
-        }
-        
+        echo json_encode($response);
     }
     public function update() 
     {
-        
+        $response = array();
+        $response['status']=false;
         $data = array(
             'full_name' => $this->input->post('full_name',TRUE),
             'phone_number' => $this->input->post('phone_number',TRUE),
@@ -206,14 +215,13 @@ class Admin extends CI_Controller
 
         $result = $this->Admin_model->update($this->input->post('id', TRUE), $data);
         if($result){
-            $response = array();
             $response['status']=true;
-            $response['success'] = 'Update Employee Successfully.';
-            echo json_encode($response);
+            $response['success'] = 'Update user Successfully.';
         }
         else{
-            echo FALSE;
+            $response['success'] = 'Some error occur while updating';
         }
+        echo json_encode($response);
     }
     
     public function delete($id) 

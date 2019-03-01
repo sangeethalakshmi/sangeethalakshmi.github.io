@@ -31,13 +31,8 @@ function updateUser(from,obj){
             data: user_details,
             success: function (result) {
                 var data = $.parseJSON(result);
-                if (data.success) {
-                  if(functionname =='create'){
-                    $('#user_success').html('Add Employee Successfully.');
-                  }else{
-                    $('#user_success').html('Update Employee Successfully.');
-                  }
-                  
+                if (data && data.status) {
+                  $('#user_success').html(data.success);
                   $('#user_success').show();
                   setTimeout(function () {
                       $('#user_success').hide();
@@ -45,11 +40,9 @@ function updateUser(from,obj){
                   }, 2000);
                 }
                 else {
-                    $('#user_error').html(data.error);
+                    $('#user_error').html(data.success);
                     $('#user_error').show();
-                    $('#email_address').val('');
-                    $('#full_name').val('');
-                    $('#emp_id').val('');
+                    setDefaultvalues();
                 }
             }
         });
@@ -62,16 +55,20 @@ function updateUser(from,obj){
        
     }
 }
-function getAddUserForm(){
-  $('.listscreen').hide();
-  $('.addscreen').show();
+function setDefaultvalues(){
   $('#full_name').val("");
   $('#email_address').val("");
   $('#phone_number').val("");
   $('#emp_id').val("");
-  $('#role').val("");
-  $('#status').val("");
+  $('#password').val("");
+  $('#status1').val("");
   $('#active').val("");
+  $( "#employee" ).prop( "checked", true );
+}
+function getAddUserForm(){
+  $('.listscreen').hide();
+  $('.addscreen').show();
+  setDefaultvalues();
 }
 function deleteUserConfirmDetails(id) {
   if (confirm('Are you sure want to delete?')) {
@@ -92,13 +89,7 @@ function deleteUserConfirmDetails(id) {
 function getEmployeedeatils(id){
   $('.listscreen').hide();
   $('.addscreen').show();
-  $('#full_name').val("");
-  $('#email_address').val("");
-  $('#phone_number').val("");
-  $('#emp_id').val("");
-  $('#role').val("");
-  $('#status1').val("");
-  $('#active').val("");
+  setDefaultvalues();
   $.ajax({
       type: "get",
       url: site_url + 'Admin/read/'+id,
@@ -112,9 +103,14 @@ function getEmployeedeatils(id){
             $('#email_address').val(data.user.email);
             $('#phone_number').val(data.user.phone_number);
             $('#emp_id').val(data.user.id);
-            $('#role').val(data.user.role);
             $('#status1').val(data.user.status);
             $('#active').val(data.user.active);
+            $('#password').val(data.user.password);
+            if(data.user.role == 'Admin'){
+              $( "#admin" ).prop( "checked", true );
+            }else{
+              $( "#employee" ).prop( "checked", true );
+            }
           } 
         } 
       }

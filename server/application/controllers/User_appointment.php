@@ -139,7 +139,7 @@ class User_appointment extends CI_Controller
                 $tmpdatafield = $filterdatafield;
             }
         }
-        $orderby = "";
+        $orderby = "order by app.created_at desc";;
         $sortdatafield = $this->input->get("sortdatafield");
         $sortorder = $this->input->get("sortorder");
         if (isset($sortdatafield) && isset($sortorder) && ($sortorder == "asc"  || $sortorder == "desc"))

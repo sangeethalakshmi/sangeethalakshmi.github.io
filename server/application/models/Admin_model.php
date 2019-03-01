@@ -94,6 +94,17 @@ class Admin_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    //checking for employee
+    public function checkEmployee($arr)
+    {
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->where('email',$arr['email']);
+        $query=$this->db->get();
+        $result=$query->result();
+        return $result;
+    }
+
 }
 
 /* End of file Admin_model.php */

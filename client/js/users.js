@@ -53,12 +53,7 @@ function updateUser(from,obj){
               }else {
                   $('#user_error').html(data.success);
                   $('#user_error').show();
-                  $('#email_address').val('');
-                  $('#full_name').val('');
-                  $('#phone_number').val('');
-                  $('#password').val('');
-                  $('#gender').val('M');
-                  $('#DOB').val('');
+                  setDefaultvalues();
               }
           }
       });
@@ -70,22 +65,26 @@ function updateUser(from,obj){
       $('#email_address_error').show();
   } 
 }
-function getAddUserForm(){
-  $('.listscreen').hide();
-  $('.addscreen').show();
-  $('.detailsscreen').hide();
-  $('#full_name').val("");
-  $('#email_address').val("");
-  $('#phone_number').val("");
+function setDefaultvalues(){
+  $('#email_address').val('');
+  $('#full_name').val('');
+  $('#phone_number').val('');
   $('#password').val('');
-  $('#gender').val('M');
+  //$('#gender').val('M');
+  $('#DOB').val('');
+  $('#DOB').val('1970-01-01');
   $('#dobdate').datepicker({
     format: "yyyy-mm-dd",
     startDate: "1900-01-01",
     endDate: "now()",
     defaultViewDate: { year: 1970, month: 00, day: 01 }
   });
-  $('#DOB').val('1970-01-01');
+  $( "#male" ).prop( "checked", true );
+}
+function getAddUserForm(){
+  $('.listscreen').hide();
+  $('.addscreen').show();
+  setDefaultvalues();
 }
 function deleteUserConfirmDetails(id) {
   data = userslist[id];

@@ -132,7 +132,7 @@ class User_profile extends CI_Controller
                 $tmpdatafield = $filterdatafield;
             }
         }
-        $orderby = "";
+        $orderby = "order by created_at DESC";
 	$sortdatafield = $this->input->get("sortdatafield");
 	$sortorder = $this->input->get("sortorder");
 	if (isset($sortdatafield) && isset($sortorder) && ($sortorder == "asc"  || $sortorder == "desc"))
