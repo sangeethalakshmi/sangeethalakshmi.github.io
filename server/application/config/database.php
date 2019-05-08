@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-    'password' => 'turvo',
-    'database' => 'book_appointment',
+	'hostname' => '127.0.0.1',
+	'username' => 'renukaka_admin',
+	'password' => 'aDMin@123',
+	'database' => 'renukaka_book_appointment',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

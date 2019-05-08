@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -99,7 +99,7 @@ window.fbAsyncInit = function() {
       xfbml      : true,  // parse social plugins on this page
       version    : 'v2.8' // use graph api version 2.8
     });
-    
+
     // Check whether the user already logged in
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
@@ -141,7 +141,7 @@ function getFbUserData(){
         $('#login_error').html('Login fail. Please try later');
         $('#login_error').show();
       };
-        
+
     });
 }
 // Logout from facebook
@@ -163,7 +163,7 @@ function saveUserData(userData,type){
       userDetails['oauth_provider'] = 'facebook'
     };
   };
-  
+
   $.ajax({
             type: "POST",
             url: site_url + "user_profile/authenticateSocialProvider",
