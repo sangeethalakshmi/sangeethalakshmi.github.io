@@ -77,6 +77,15 @@ class CI_Controller {
 
 		$this->load =& load_class('Loader', 'core');
 		$this->load->initialize();
+
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Credentials: true');
+		header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
+		header('Access-Control-Allow-Headers:  Content-Type, Cache-Control, X-Auth-Token, Origin, X-Requested-With, Authorization, Access-Control-Request-Method, Access-Control-Request-Headers');
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method == "OPTIONS") {
+			die();
+		}
 		log_message('info', 'Controller Class Initialized');
 	}
 
